@@ -19,7 +19,7 @@ export const Select = () => {
         { label: "Emp1", value: "Emp1" },
         { label: "Emp2", value: "Emp2" },
         { label: "Emp3", value: "Emp3" },
-      ]);
+      ]); 
 
     const [filiOpen, setFiliOpen] = useState(false);
     const [filiValue, setFiliValue] = useState(null);
@@ -46,8 +46,10 @@ export const Select = () => {
                 setItems={setEmp}
                 placeholder="Empresa"
                 placeholderStyle={styles.placeholderStyles}
+                autoScroll={true}
                 zIndex={3000}
                 zIndexInverse={1000}
+                containerStyle={{width:"80%"}}
                 />
                 
                 <View style={{ height: 30 }}></View>
@@ -62,7 +64,9 @@ export const Select = () => {
                 setItems={setFili}
                 placeholder="Filial"
                 placeholderStyle={styles.placeholderStyles}
+                autoScroll={true}
                 zIndex={2000}
+                containerStyle={{width:"80%"}}
                 zIndexInverse={1000}
                 />
             </View>
@@ -83,22 +87,15 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     },
     header: {
-        paddingTop: 200,
+        paddingTop: "30%",
         paddingBottom: 100,
     },
     placeholderStyles: {
       color: "grey",
     },
-    dropdownGender: {
-      marginHorizontal: 10,
-      width: "50%",
-      marginBottom: 15,
-    },
     dropdown: {
       borderColor: "#B7B7B7",
       height: 60,
-      
-      width: 400,
     },
     getStarted: {
       backgroundColor: "#5188E3",

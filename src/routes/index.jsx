@@ -9,9 +9,9 @@ const Stack = createNativeStackNavigator();
 export const Routes = () => {
     return(
      <Stack.Navigator>
-        <Stack.Navigator name="CriarPedido" component={CriarPedidos} options={{headerShown: false}} />
         <Stack.Screen name="Select" component={Select} options={{headerShown: false}} />
         <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+        <Stack.Screen name="CriarPedido" component={CriarPedidos} options={{headerShown: false}} />
      </Stack.Navigator>   
     )
 }
