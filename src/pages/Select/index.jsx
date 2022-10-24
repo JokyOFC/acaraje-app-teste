@@ -8,6 +8,8 @@ import { Combo } from "../../components/Combo"
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const Select = () => {
 
@@ -30,51 +32,53 @@ export const Select = () => {
       ]);
 
     return(
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Profile large={true}/>
-            </View>
-            <View style={styles.form}>
-                <Text>Selecione uma empresa</Text>
-                <DropDownPicker
-                style={styles.dropdown}
-                open={empOpen}
-                value={empValue} //genderValue
-                items={emp}
-                setOpen={setEmpOpen}
-                setValue={setEmpValue}
-                setItems={setEmp}
-                placeholder="Empresa"
-                placeholderStyle={styles.placeholderStyles}
-                autoScroll={true}
-                zIndex={3000}
-                zIndexInverse={1000}
-                containerStyle={{width:"80%"}}
-                />
-                
-                <View style={{ height: 30 }}></View>
-                <Text>Selecione uma Filial</Text>
-                <DropDownPicker
-                style={styles.dropdown}
-                open={filiOpen}
-                value={filiValue} //genderValue
-                items={fili}
-                setOpen={setFiliOpen}
-                setValue={setFiliValue}
-                setItems={setFili}
-                placeholder="Filial"
-                placeholderStyle={styles.placeholderStyles}
-                autoScroll={true}
-                zIndex={2000}
-                containerStyle={{width:"80%"}}
-                zIndexInverse={1000}
-                />
-            </View>
-            <View styles={{marginTop: 200}}>
-                <BtDef onPress={() => navigation.navigate('Home')}/>
-            </View>
+      <SafeAreaView>
+          <View style={styles.container}>
+              <View style={styles.header}>
+                  <Profile large={true}/>
+              </View>
+              <View style={styles.form}>
+                  <Text>Selecione uma empresa</Text>
+                  <DropDownPicker
+                  style={styles.dropdown}
+                  open={empOpen}
+                  value={empValue} //genderValue
+                  items={emp}
+                  setOpen={setEmpOpen}
+                  setValue={setEmpValue}
+                  setItems={setEmp}
+                  placeholder="Empresa"
+                  placeholderStyle={styles.placeholderStyles}
+                  autoScroll={true}
+                  zIndex={3000}
+                  zIndexInverse={1000}
+                  containerStyle={{width:"80%"}}
+                  />
+                  
+                  <View style={{ height: 30 }}></View>
+                  <Text>Selecione uma Filial</Text>
+                  <DropDownPicker
+                  style={styles.dropdown}
+                  open={filiOpen}
+                  value={filiValue} //genderValue
+                  items={fili}
+                  setOpen={setFiliOpen}
+                  setValue={setFiliValue}
+                  setItems={setFili}
+                  placeholder="Filial"
+                  placeholderStyle={styles.placeholderStyles}
+                  autoScroll={true}
+                  zIndex={2000}
+                  containerStyle={{width:"80%"}}
+                  zIndexInverse={1000}
+                  />
+              </View>
+              <View styles={{marginTop: "10%"}}>
+                  <BtDef onPress={() => navigation.navigate('Home')}>Entrar</BtDef>
+              </View>
 
-        </View>
+          </View>
+      </SafeAreaView>
     );
 }
 
@@ -87,8 +91,8 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     },
     header: {
-        paddingTop: "30%",
-        paddingBottom: 100,
+        paddingTop: "20%",
+        paddingBottom: "15%",
     },
     placeholderStyles: {
       color: "grey",

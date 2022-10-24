@@ -28,17 +28,17 @@ export const Home = () => {
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Pedidos</Text>
                             <View style={{width: "35%"}}></View>
-                            <BtDef icon onPress={() => navigation.navigate('Pedidos')}/>
+                            <BtDef  onPress={() => navigation.navigate('Pedidos')} icon="chevron-right"/>
                         </View>
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Produtos</Text>
                             <View style={{width: "32%"}}></View>
-                            <BtDef icon onPress={() => navigation.navigate('Produtos')}/>
+                            <BtDef  onPress={() => navigation.navigate('Produtos')} icon="chevron-right"/>
                         </View>
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Criar Pedidos</Text>
                             <View style={{width: "20%"}}></View>
-                            <BtDef icon onPress={() => navigation.navigate('CriarPedido')}/>
+                            <BtDef onPress={() => navigation.navigate('CriarPedido')} icon="chevron-right"/>
                         </View>
                     </View>
                 </View>
