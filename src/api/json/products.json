@@ -40,5 +40,12 @@
 		"price": 5,
 		"createdAt": "2022-10-19T17:11:26.817Z",
 		"__v": 0
+	},
+	{
+		"_id": "63502fbec830049533ab52",
+		"name": "lorem impsun dolor amet sabat in caleb distart",
+		"price": 5,
+		"createdAt": "2022-10-19T17:11:26.817Z",
+		"__v": 0
 	}
 ]

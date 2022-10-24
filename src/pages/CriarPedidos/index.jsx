@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from "react-native"
 
@@ -16,12 +16,18 @@ import { RadioButton } from 'react-native-paper';
 import { BtDef } from "../../components/BtDef";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useNavigation } from "@react-navigation/native";
+
 export const CriarPedidos = () => {
 
     const [ item, setItem ] = useState({})
 
     const [ total, setTotal ] = useState(0)
     
+    const navigator = useNavigation();
+
+    const [checked, setChecked] = useState('first');
+
     return(
         <SafeAreaView>
                 <View style={styles.container}>
@@ -37,22 +43,24 @@ export const CriarPedidos = () => {
                                 console.log(Data)
 
                                 return(
-                                    <View key={Data._id} style={{ display: "flex", flexDirection: 'row', alignItems: 'center'}}>
-                                        <View style={{ display: "flex", flexDirection: 'row', paddingTop: "10%", alignItems: "center", justifyContent: "center" }}>
-                                            <TouchableOpacity style={{  alignItems: "center", justifyContent: "center", padding: 10 }} onPress={() => {
-                                                setToggleCheckBox(!toggleCheckBox)
-                                            }}>
-                                                <CheckBox 
-                                                disabled={false}
-                                                value={toggleCheckBox}
-                                                onValueChange={(newValue) => { setToggleCheckBox(newValue) }}/>
+                                    <View key={Data._id} style={{ display: "flex", flexDirection: 'row', alignItems: 'center', paddingTop: "7%"}}>
+                                        <View style={{ display: "flex", flexDirection: 'row', alignItems: 'center'}}>
+                                            <TouchableOpacity style={{  alignItems: "center", justifyContent: "center", padding: 10, paddingRight: 0 }} onPress={() => {
+                                                    setToggleCheckBox(!toggleCheckBox)
+                                                }}>
+                                                    <CheckBox 
+                                                    disabled={false}
+                                                    value={toggleCheckBox}
+                                                    onValueChange={(newValue) => { setToggleCheckBox(newValue) }}/>
                                             </TouchableOpacity>
-                                            <Text style={{paddingLeft: 20}}>{Data.name}</Text>
-                                            <Text style={{color: "green", paddingLeft: 10}}>R$ {Data.price}</Text>
+                                            <View style={{ display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", maxWidth: 180 , minHeight: 50}}>
+                                                <Text style={{paddingLeft: 20}}>{Data.name}</Text>
+                                            </View>
                                         </View>
-                                        <View style={{display: 'flex', alignContent: 'center', flexDirection: 'row', alignItems: "center", paddingTop: "10%", paddingLeft: "3%"}}>
+                                        <View style={{display: 'flex', alignContent: 'center', flexDirection: 'row', alignItems: "center", marginLeft: "auto" }}>
+                                            <Text style={{color: "green", paddingLeft: 10}}>R$ {Data.price}</Text>
                                             <Text> X </Text>
-                                            <TextInput style={{ marginLeft: "5%", padding: 5, backgroundColor: "#DFDFDF", height: 40, borderRadius: 5, textAlign: "center"}} placeholder="QTDE" keyboardType="numeric"/>
+                                            <TextInput style={{ marginLeft: "5%", padding: 5, backgroundColor: "#DFDFDF", height: 40, borderRadius: 5, textAlign: "center"}} placeholder="QTDE" keyboardType="numeric" maxLength={2}/>
                                         </View>
                                     </View>
                                 )
@@ -62,22 +70,21 @@ export const CriarPedidos = () => {
                     </View>
                     <View style={{ minHeight: '20%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{ color: "green", fontSize: 25, fontWeight: "bold" }}>Total</Text>
-                            <Text style={{ color: "green", fontSize: 20 }}>R$ XX.XX</Text>
+                            <Text style={{ color: "green", fontSize: 20 }}>R$ 00.00</Text>
                     </View>
                     <View >
                         <Text style={{ fontSize: 20, fontWeight: "bold" }}>Forma de pagamento</Text>
                         <ScrollView style={{ maxHeight: 100 }}>
+                            <RadioButton.Group onValueChange={newValue => setChecked(newValue)} value={checked}>
                             {
                                 payments.map((Data) => {
-                                    const [checked, setChecked] = useState('first');
-                                    console.log(checked+1)
                                     return(
                                         <View key={Data._id} style={{ paddingTop: "1%" }}>
                                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                                 <RadioButton
-                                                    // value="first"
-                                                    // status={ checked === 'first' ? 'checked' : 'unchecked' }
-                                                    onPress={() => setChecked('first')}
+                                                    value=""
+                                                    // status={ checked === 1 ? 'checked' : 'unchecked' }
+                                                    // onPress={() => checked ? setChecked(0): setChecked(1)}
                                                 />
                                                 <Text>{Data.name}</Text>
                                             </View>
@@ -85,10 +92,13 @@ export const CriarPedidos = () => {
                                     )
                                 })
                             }
+                            </RadioButton.Group>
                         </ScrollView>
                     </View>
                     <View style={{ width: "100%", alignItems: "center", marginTop: "7%" }}>
-                        <BtDef> Finalizar </BtDef>
+                        <BtDef onPress={() => {
+                            navigator.navigate('Finish')
+                        }} > Finalizar </BtDef>
                     </View>
                 </View>
         </SafeAreaView>

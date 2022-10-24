@@ -30,16 +30,46 @@ export const Home = () => {
                             <View style={{width: "35%"}}></View>
                             <BtDef  onPress={() => navigation.navigate('Pedidos')} icon="chevron-right"/>
                         </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#DFDFDF',
+                                borderBottomWidth: 2,
+                                width: "60%",
+                                marginLeft: "17%"
+                            }}
+                        />
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Produtos</Text>
                             <View style={{width: "32%"}}></View>
                             <BtDef  onPress={() => navigation.navigate('Produtos')} icon="chevron-right"/>
                         </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#DFDFDF',
+                                borderBottomWidth: 2,
+                                width: "60%",
+                                marginLeft: "17%"
+                            }}
+                        />
+                        <View style={styles.product}>
+                            <Text style={{fontSize: 25}}>Pagamentos</Text>
+                            <View style={{width: "22%"}}></View>
+                            <BtDef onPress={() => navigation.navigate('Pagamentos')} icon="chevron-right"/>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#DFDFDF',
+                                borderBottomWidth: 2,
+                                width: "60%",
+                                marginLeft: "17%"
+                            }}
+                        />
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Criar Pedidos</Text>
                             <View style={{width: "20%"}}></View>
                             <BtDef onPress={() => navigation.navigate('CriarPedido')} icon="chevron-right"/>
                         </View>
+                        
                     </View>
                 </View>
 
@@ -79,7 +109,8 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "space-around",
         alignItems: "center",
-        marginBottom: 20,
+        marginBottom: 10,
+        marginTop: 10,
         
     },
 
