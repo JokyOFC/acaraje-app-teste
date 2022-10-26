@@ -28,5 +28,95 @@
 		"total": 20,
 		"createdAt": "2022-10-13T16:57:20.166Z",
 		"__v": 0
+	},
+	{
+		"_id": "6348437046c78782c2e33e74",
+		"cliente": "teste2",
+		"products": [
+			{
+				"quantity": 10,
+				"item": {
+					"_id": "63482c2a55f6ff84eabb2ec8",
+					"name": "acaraje",
+					"price": 10,
+					"createdAt": "2022-10-13T15:18:02.698Z",
+					"__v": 0
+				},
+				"_id": "6348437046c78782c2e33e75"
+			}
+		],
+		"paymentMethod": {
+			"_id": "63483180c9d5ad896f760417",
+			"name": "Cartao fidelidade",
+			"__v": 0
+		},
+		"base": {
+			"_id": "63482fe52cf850829ee577f9",
+			"name": "teste",
+			"__v": 0
+		},
+		"total": 20,
+		"createdAt": "2022-10-13T16:57:20.166Z",
+		"__v": 0
+	},
+	{
+		"_id": "6348437046c78782c2e33e74",
+		"cliente": "teste3",
+		"products": [
+			{
+				"quantity": 10,
+				"item": {
+					"_id": "63482c2a55f6ff84eabb2ec8",
+					"name": "acaraje",
+					"price": 10,
+					"createdAt": "2022-10-13T15:18:02.698Z",
+					"__v": 0
+				},
+				"_id": "6348437046c78782c2e33e75"
+			}
+		],
+		"paymentMethod": {
+			"_id": "63483180c9d5ad896f760417",
+			"name": "Cartao fidelidade",
+			"__v": 0
+		},
+		"base": {
+			"_id": "63482fe52cf850829ee577f9",
+			"name": "teste",
+			"__v": 0
+		},
+		"total": 20,
+		"createdAt": "2022-10-13T16:57:20.166Z",
+		"__v": 0
+	},
+	{
+		"_id": "6348437046c78782c2e33e74",
+		"cliente": "teste4",
+		"products": [
+			{
+				"quantity": 10,
+				"item": {
+					"_id": "63482c2a55f6ff84eabb2ec8",
+					"name": "acaraje",
+					"price": 10,
+					"createdAt": "2022-10-13T15:18:02.698Z",
+					"__v": 0
+				},
+				"_id": "6348437046c78782c2e33e75"
+			}
+		],
+		"paymentMethod": {
+			"_id": "63483180c9d5ad896f760417",
+			"name": "Cartao fidelidade",
+			"__v": 0
+		},
+		"base": {
+			"_id": "63482fe52cf850829ee577f9",
+			"name": "teste",
+			"__v": 0
+		},
+		"total": 20,
+		"createdAt": "2022-10-13T16:57:20.166Z",
+		"__v": 0
 	}
 ]
