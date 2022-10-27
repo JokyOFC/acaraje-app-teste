@@ -1,4 +1,6 @@
 
+import { useState } from "react";
+
 import { SafeAreaView, ScrollView, StyleSheet, View, Text } from "react-native"
 
 import { Card } from "../../components/Card"
@@ -6,14 +8,20 @@ import { Card } from "../../components/Card"
 import orders from "../../api/json/orders.json"
 // import { RadioButton } from "react-native-paper"
 
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from "react-native-simple-radio-button"
+import { useNavigation } from "@react-navigation/native";
+
+import RadioForm from "react-native-simple-radio-button"
 
 export const Pedidos = () => {
 
+    const navigator = useNavigation();
+    
+    const [ checked, setChecked ] = useState(0)
+    
     const radio_props = [
-        {label: 'Todos', value: 0},
-        {label: 'Ordenar Por X', value: 1},
-        {label: 'Ordenar Por Y', value: 2},
+        {label: 'Todos', value: checked},
+        {label: 'Ordenar Por X', value: checked},
+        {label: 'Ordenar Por Y', value: checked},
     ]
 
     return (
@@ -25,19 +33,54 @@ export const Pedidos = () => {
                         <RadioForm formHorizontal={true} 
                             radio_props={radio_props}
                             initial={0}
+                            buttonColor={'#BBBBBB'}
+                            selectedButtonColor={'#BBBBBB'}
+                            animation={true}
+                            buttonSize={12}
+                            labelStyle={{ paddingRight: "3%" }}
+                            onPress={(value) => setChecked(value)}
                         />
                     </View>
                 </View>
                 <ScrollView style={{ maxHeight: "87%", maxWidth: 450 }}>
                     <View style={{ alignItems: "center" }}>
                         {
-                            orders.map((order) => (
-                                <Card>
-                                    <Text>
-                                        {order.cliente}
-                                    </Text>
+                            orders.map((order) => {
+                                // const [ page, setPage ] = useState()
+                                // setPage()
+                                return(
+                                <Card onPress={() => {navigator.navigate('Pedido', {
+                                    orderId: order._id
+                                })}}>
+                                    <View>
+                                        <View>
+                                            <Text style={{fontSize: 20}}>
+                                                {order.id} - {order.cliente}
+                                            </Text>
+                                        </View>
+                                        <View style={{paddingLeft: "3%", paddingTop: "1%"}}>
+                                            <Text style={{ color: "#AAAAAA"}}>
+                                                Qntd. de Produtos: {order.products.length}
+                                            </Text>
+                                            <Text style={{ color: "#AAAAAA"}}>
+                                                Pagamento: {order.paymentMethod.name}
+                                            </Text>
+                                            <Text style={{ color: "#AAAAAA"}}>
+                                                Status: {order.finished === true ? <Text style={{ color: "green"}}>Finalizado</Text> : <Text style={{ color: "red"}}>Em Andamento</Text>}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View style={{alignItems: "center", justifyContent: "center", padding: 14}}>
+                                        <Text style={{ color: "green", fontWeight: "bold" }}>
+                                            Total
+                                        </Text>
+                                        <Text style={{ color: "green" }}>R${order.total}.00</Text>
+                                    </View>
+                                        <View style={{alignItems: "flex-end", justifyContent: "flex-end"}}>
+                                            <Text style={{fontSize: 12, color: "#AAAAAA"}}>{new Date(order.createdAt).toLocaleString()}</Text>
+                                        </View>
                                 </Card>
-                            ))
+                            )})
                         }
                     </View>
                 </ScrollView>

@@ -1,9 +1,9 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 
 
-export const Card = ({ children }) => {
+export const Card = ({ children, onPress }) => {
     return(
-    <TouchableOpacity style={{ width: "100%", alignItems: "center" }}>
+    <TouchableOpacity onPress={onPress} style={{ width: "100%", alignItems: "center"}}>
         <View style={styles.container}>
             {children}
         </View>
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
         width: "85%",
         shadowColor: "#D9D9D9",
         margin: 10,
-        shadowRadius: 25,
-        shadowOffset: 5,
-        shadowOpacity: 2,
-    }
+    },
+    elevation: {
+        
+    },
 })

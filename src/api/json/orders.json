@@ -1,8 +1,20 @@
 [
 	{
-		"_id": "6348437046c78782c2e33e74",
+		"_id": "6348437046c78782c2e33e71",
+		"id" : "1",
 		"cliente": "teste",
 		"products": [
+			{
+				"quantity": 10,
+				"item": {
+					"_id": "63482c2a55f6ff84eabb2ec8",
+					"name": "acaraje",
+					"price": 10,
+					"createdAt": "2022-10-13T15:18:02.698Z",
+					"__v": 0
+				},
+				"_id": "6348437046c78782c2e33e75"
+			},
 			{
 				"quantity": 10,
 				"item": {
@@ -26,11 +38,13 @@
 			"__v": 0
 		},
 		"total": 20,
+		"finished": false,
 		"createdAt": "2022-10-13T16:57:20.166Z",
 		"__v": 0
 	},
 	{
-		"_id": "6348437046c78782c2e33e74",
+		"_id": "6348437046c78782c2e33e72",
+		"id" : "2",
 		"cliente": "teste2",
 		"products": [
 			{
@@ -56,11 +70,13 @@
 			"__v": 0
 		},
 		"total": 20,
+		"finished": true,
 		"createdAt": "2022-10-13T16:57:20.166Z",
 		"__v": 0
 	},
 	{
-		"_id": "6348437046c78782c2e33e74",
+		"_id": "6348437046c78782c2e33e73",
+		"id" : "3",
 		"cliente": "teste3",
 		"products": [
 			{
@@ -86,12 +102,14 @@
 			"__v": 0
 		},
 		"total": 20,
+		"finished": true,
 		"createdAt": "2022-10-13T16:57:20.166Z",
 		"__v": 0
 	},
 	{
 		"_id": "6348437046c78782c2e33e74",
 		"cliente": "teste4",
+		"id" : "4",
 		"products": [
 			{
 				"quantity": 10,
@@ -116,6 +134,7 @@
 			"__v": 0
 		},
 		"total": 20,
+		"finished": true,
 		"createdAt": "2022-10-13T16:57:20.166Z",
 		"__v": 0
 	}
