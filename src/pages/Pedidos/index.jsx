@@ -56,7 +56,7 @@ export const Pedidos = () => {
                                 // let mo = new Intl.DateTimeFormat('pt-BR', { month: '2-digit' }).format(datavenda);
                                 // let da = new Intl.DateTimeFormat('pt-BR', { day: '2-digit' }).format(datavenda);
                                 return(
-                                <Card onPress={() => {navigator.navigate('Pedido', {
+                                <Card key={order._id} onPress={() => {navigator.navigate('Pedido', {
                                     orderId: order._id
                                 })}}>
                                     <View>

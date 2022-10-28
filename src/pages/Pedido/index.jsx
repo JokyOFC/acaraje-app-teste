@@ -41,7 +41,7 @@ export const Pedido = ({ route, navigation }) => {
                                     <View style={{ padding: "2%" }}>
                                         {data.products.map((prod) => {
                                             return(
-                                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", paddingTop: "10%", paddingBottom: "10%" }}>
+                                                    <View key={prod._id} style={{ display: "flex", flexDirection: "row", alignItems: "center", paddingTop: "10%", paddingBottom: "10%" }}>
                                                         <Text>{prod.item.name}</Text>
                                                         <View style={{ display: "flex", flexDirection: "row",  width: "100%", alignItems: "center", justifyContent: "flex-end" }}>
                                                             <Text style={{ color: "green" }}>R${prod.item.price}.00</Text>

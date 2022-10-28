@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Text, StyleSheet, View } from "react-native"
+import { Text, StyleSheet, View, Alert } from "react-native"
 
 import { Profile } from "../../components/Profile"
 import { BtDef } from "../../components/BtDef"
@@ -74,7 +74,7 @@ export const Select = () => {
                   />
               </View>
               <View styles={{marginTop: "10%"}}>
-                  <BtDef onPress={() => navigation.navigate('Home')}>Entrar</BtDef>
+                  <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : navigation.navigate('Home') }}>Entrar</BtDef>
               </View>
 
           </View>

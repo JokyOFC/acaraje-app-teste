@@ -18,7 +18,7 @@ export const Produtos = () => {
                     {
                         products.map((data) => {
                             return(
-                            <Card onPress={() => navigator.navigate('Produto', { isNew: false, prodId: "" })}>
+                            <Card key={data._id} onPress={() => navigator.navigate('Produto', { isNew: false, prodId: data._id })}>
                                 <View style={{ padding:"15%" , alignItems: "center", justifyContent: "center"}}>
                                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>{data.name}</Text>
                                     <Text style={{ fontSize: 18, color:"green", paddingTop: 10 }}> R${data.price}.00 </Text>
@@ -41,5 +41,6 @@ const styles = StyleSheet.create({
         padding: "10%",
         paddingLeft: "3%",
         paddingBottom: "7%",
+        paddingRight: "5%"
     }
 })
