@@ -10,7 +10,8 @@ import orders from "../../api/json/orders.json"
 
 import { useNavigation } from "@react-navigation/native";
 
-import RadioForm from "react-native-simple-radio-button"
+import RadioForm from "react-native-simple-radio-button";
+import { format } from "date-fns";
 
 export const Pedidos = () => {
 
@@ -48,6 +49,12 @@ export const Pedidos = () => {
                             orders.map((order) => {
                                 // const [ page, setPage ] = useState()
                                 // setPage()
+                                const datavenda = new Date(order.createdAt);
+                                let data = format(datavenda, "dd/MM/yyyy")
+                                // let data = datavenda.toLocaleDateString()
+                                // let ye = new Intl.DateTimeFormat('pt-BR', { year: 'numeric' }).format(datavenda);
+                                // let mo = new Intl.DateTimeFormat('pt-BR', { month: '2-digit' }).format(datavenda);
+                                // let da = new Intl.DateTimeFormat('pt-BR', { day: '2-digit' }).format(datavenda);
                                 return(
                                 <Card onPress={() => {navigator.navigate('Pedido', {
                                     orderId: order._id
@@ -77,7 +84,7 @@ export const Pedidos = () => {
                                         <Text style={{ color: "green" }}>R${order.total}.00</Text>
                                     </View>
                                         <View style={{alignItems: "flex-end", justifyContent: "flex-end"}}>
-                                            <Text style={{fontSize: 12, color: "#AAAAAA"}}>{new Date(order.createdAt).toLocaleString()}</Text>
+                                            <Text style={{fontSize: 12, color: "#AAAAAA"}}>{data}</Text>
                                         </View>
                                 </Card>
                             )})

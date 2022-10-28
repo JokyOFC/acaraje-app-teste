@@ -33,7 +33,7 @@ export const CriarPedidos = () => {
                 <View style={styles.container}>
                     <View>
                         <Text style={{fontSize: 20, fontWeight: "bold"}}>Produtos</Text>
-                        <ScrollView style={{ maxHeight: 345 }}>
+                        <ScrollView style={{ maxHeight: 265 }}>
                             {
                                 products.map((Data) => {
                                     
@@ -48,10 +48,11 @@ export const CriarPedidos = () => {
                                             <TouchableOpacity style={{  alignItems: "center", justifyContent: "center", padding: 10, paddingRight: 0 }} onPress={() => {
                                                     setToggleCheckBox(!toggleCheckBox)
                                                 }}>
-                                                    <CheckBox 
+                                                <CheckBox 
                                                     disabled={false}
                                                     value={toggleCheckBox}
-                                                    onValueChange={(newValue) => { setToggleCheckBox(newValue) }}/>
+                                                    onValueChange={(newValue) => { setToggleCheckBox(newValue) }}
+                                                />
                                             </TouchableOpacity>
                                             <View style={{ display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", maxWidth: 180 , minHeight: 50}}>
                                                 <Text style={{paddingLeft: 20}}>{Data.name}</Text>

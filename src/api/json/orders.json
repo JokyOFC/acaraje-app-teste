@@ -25,6 +25,17 @@
 					"__v": 0
 				},
 				"_id": "6348437046c78782c2e33e75"
+			},
+			{
+				"quantity": 10,
+				"item": {
+					"_id": "63482c2a55f6ff84eabb2ec8",
+					"name": "acaraje",
+					"price": 10,
+					"createdAt": "2022-10-13T15:18:02.698Z",
+					"__v": 0
+				},
+				"_id": "6348437046c78782c2e33e75"
 			}
 		],
 		"paymentMethod": {
