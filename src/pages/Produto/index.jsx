@@ -21,6 +21,9 @@ function NewProduct() {
     return(
         <View style={styles.container}>
             <Text style={{fontSize: 25}}>Criar Forma de Pagamento</Text>
+            <View>
+                
+            </View>
         </View>
     )
 }
@@ -29,6 +32,9 @@ function Product({ id }) {
     return(
         <View style={styles.container}>
             <Text style={{fontSize: 25}}>Forma de Pagamento</Text>
+            <View>
+                
+            </View>
         </View>
     )
 }
