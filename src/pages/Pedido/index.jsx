@@ -82,7 +82,7 @@ export const Pedido = ({ route, navigation }) => {
                                     <Text style={{ paddingLeft: "2%"}}>Finalizado</Text>
                                 </View>
                                 <View style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around", paddingLeft: "10%" }}>
-                                    <BtDef onPress={() => navigator.navigate('Finish')}> Cancelar </BtDef>
+                                    <BtDef onPress={() => navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!"})}> Cancelar </BtDef>
                                     <BtDef onPress={() => navigator.goBack()} > Voltar </BtDef>
                                 </View>
 

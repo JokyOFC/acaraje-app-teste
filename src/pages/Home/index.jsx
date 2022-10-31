@@ -1,4 +1,6 @@
 
+import { useContext } from "react";
+
 import { StyleSheet, Text, Button, View } from "react-native"
 
 import { Profile } from "../../components/Profile"
@@ -6,19 +8,29 @@ import { BtDef } from "../../components/BtDef"
 
 import { useNavigation } from '@react-navigation/native';
 
+import { EmpContext } from "../../contexts/emp";
+
+import base from "../../api/json/base.json"
+
 export const Home = () => {
 
+    const { empr, filiais, profilePhoto } = useContext(EmpContext)
+
     const navigation = useNavigation();
+
+    const baseCur = base.find(e => e._id === empr)
+
+    const filiCur = baseCur.filiais.find(fil => fil.filicod === filiais)
 
     return(
         <View style={styles.container}>
             <View style={styles.header}>
                 <View>
-                    <Profile />
+                    <Profile srcImg={profilePhoto}/>
                 </View>
                 <View style={{ flex:1, flexDirection: "column", paddingLeft: 20, width: 80 }}>
-                    <Text style={{ fontSize: 20, width: "100%" }}>Empresa</Text>
-                    <Text>Filial</Text>
+                    <Text style={{ fontSize: 20, width: "100%" }}>{baseCur.name}</Text>
+                    <Text>{filiCur.name}</Text>
                 </View>
             </View>
             <View style={styles.body}>

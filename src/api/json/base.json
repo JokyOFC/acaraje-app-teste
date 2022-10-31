@@ -1,0 +1,44 @@
+[
+	{
+		"_id": "63482fe52cf850829ee577f9",
+		"name": "teste",
+        "filiais": [
+            {
+                "filicod": 1,
+                "name": "filial 1"
+            },
+            {
+                "filicod": 2,
+                "name": "filial 2"
+            },
+            {
+                "filicod": 3,
+                "name": "filial 3"
+            }
+        ],
+		"__v": 0
+	},
+    {
+		"_id": "63482fe52cf850829ee577f",
+		"name": "teste2",
+        "filiais": [
+            {
+                "filicod": 1,
+                "name": "filial 1"
+            },
+            {
+                "filicod": 2,
+                "name": "filial 2"
+            },
+            {
+                "filicod": 3,
+                "name": "filial 3"
+            },
+            {
+                "filicod": 4,
+                "name": "filial 4"
+            }
+        ],
+		"__v": 0
+	}
+]

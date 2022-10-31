@@ -3,6 +3,7 @@
 		"_id": "63482c2a55f6ff84eabb2ec8",
 		"name": "acaraje",
 		"price": 10,
+		"ammount" : 0,
 		"createdAt": "2022-10-13T15:18:02.698Z",
 		"__v": 0
 	},
@@ -10,6 +11,7 @@
 		"_id": "63482c3e55f6ff84eabb2eca",
 		"name": "abara",
 		"price": 10,
+		"ammount" : 0,
 		"createdAt": "2022-10-13T15:18:22.085Z",
 		"__v": 0
 	},
@@ -17,6 +19,7 @@
 		"_id": "63482c4b55f6ff84eabb2ecc",
 		"name": "acaraje com camarao",
 		"price": 10,
+		"ammount" : 0,
 		"createdAt": "2022-10-13T15:18:35.165Z",
 		"__v": 0
 	},
@@ -24,6 +27,7 @@
 		"_id": "63502fbec8305049533ab52c",
 		"name": "bolinho do estudante",
 		"price": 12,
+		"ammount" : 0,
 		"createdAt": "2022-10-19T17:11:26.817Z",
 		"__v": 0
 	},
@@ -31,6 +35,7 @@
 		"_id": "63502fbec8305049533as52c",
 		"name": "canjica",
 		"price": 5,
+		"ammount" : 0,
 		"createdAt": "2022-10-19T17:11:26.817Z",
 		"__v": 0
 	},
@@ -38,6 +43,7 @@
 		"_id": "63502fbec8305049533ab52",
 		"name": "Teste",
 		"price": 5,
+		"ammount" : 0,
 		"createdAt": "2022-10-19T17:11:26.817Z",
 		"__v": 0
 	},
@@ -45,6 +51,7 @@
 		"_id": "63502fbec830049533ab52",
 		"name": "lorem impsun dolor amet sabat in caleb distart",
 		"price": 5,
+		"ammount" : 0,
 		"createdAt": "2022-10-19T17:11:26.817Z",
 		"__v": 0
 	}

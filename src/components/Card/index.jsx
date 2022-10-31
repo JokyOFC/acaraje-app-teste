@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         padding:25,
         width: "85%",
         margin: 10,
+        elevation: 10,
     },
     pressContainer: {
         width: "100%",

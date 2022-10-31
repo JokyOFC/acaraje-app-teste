@@ -1,15 +1,16 @@
-import React, { FC, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, StyleSheet, View, Alert } from "react-native"
 
 import { Profile } from "../../components/Profile"
 import { BtDef } from "../../components/BtDef"
-import { Combo } from "../../components/Combo"
 
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
+
+import base from '../../api/json/base.json'
+import { EmpContext } from '../../contexts/emp';
 
 export const Select = () => {
 
@@ -17,64 +18,96 @@ export const Select = () => {
 
     const [empOpen, setEmpOpen] = useState(false);
     const [empValue, setEmpValue] = useState(null);
+    
     const [emp, setEmp] = useState([
         { label: "Emp1", value: "Emp1" },
         { label: "Emp2", value: "Emp2" },
         { label: "Emp3", value: "Emp3" },
-      ]); 
+    ]); 
 
     const [filiOpen, setFiliOpen] = useState(false);
     const [filiValue, setFiliValue] = useState(null);
+
     const [fili, setFili] = useState([
         { label: "Filial 1", value: "filial1" },
         { label: "Filial 2", value: "filial2" },
         { label: "Filial 3", value: "filial3" },
       ]);
 
+      const [ disb, setDisb ] = useState(true)
+
+      useEffect(() => {
+        const result = base.map((item) => ({
+          label: item.name, 
+          value: item._id
+        }))
+
+        setEmp(result)
+      },[])
+
+      const { entrar, profilePhoto } = useContext(EmpContext)
+
     return(
       <SafeAreaView>
           <View style={styles.container}>
               <View style={styles.header}>
-                  <Profile large={true}/>
+                  <Profile large={true} srcImg={profilePhoto}/>
               </View>
               <View style={styles.form}>
-                  <Text>Selecione uma empresa</Text>
+                  <Text style={{color: "#ea9247"}}>Selecione uma empresa</Text>
                   <DropDownPicker
-                  style={styles.dropdown}
-                  open={empOpen}
-                  value={empValue} //genderValue
-                  items={emp}
-                  setOpen={setEmpOpen}
-                  setValue={setEmpValue}
-                  setItems={setEmp}
-                  placeholder="Empresa"
-                  placeholderStyle={styles.placeholderStyles}
-                  autoScroll={true}
-                  zIndex={3000}
-                  zIndexInverse={1000}
-                  containerStyle={{width:"80%"}}
+                    style={styles.dropdown}
+                    open={empOpen}
+                    value={empValue}
+                    items={emp}
+                    setOpen={setEmpOpen}
+                    setValue={setEmpValue}
+                    setItems={setEmp}
+                    placeholder="Empresa"
+                    placeholderStyle={styles.placeholderStyles}
+                    autoScroll={true}
+                    zIndex={3000}
+                    zIndexInverse={1000}
+                    containerStyle={{width:"80%"}}
+                    closeAfterSelecting={true}
+                    listMode="SCROLLVIEW"
+                    textStyle={{ color: "#ea9247" }}
+                    onSelectItem={(value) => {
+                      console.log(value)
+                      const resultVal = base.filter(x => x._id === value.value)[0].filiais.map((item) => ({
+                        label: item.name, 
+                        value: item.filicod
+                      }))
+              
+                      setFili(resultVal)
+                      setDisb(false)
+                    }}
                   />
                   
                   <View style={{ height: 30 }}></View>
-                  <Text>Selecione uma Filial</Text>
+                  <Text style={{color: "#ea9247"}}>Selecione uma Filial</Text>
                   <DropDownPicker
-                  style={styles.dropdown}
-                  open={filiOpen}
-                  value={filiValue} //genderValue
-                  items={fili}
-                  setOpen={setFiliOpen}
-                  setValue={setFiliValue}
-                  setItems={setFili}
-                  placeholder="Filial"
-                  placeholderStyle={styles.placeholderStyles}
-                  autoScroll={true}
-                  zIndex={2000}
-                  containerStyle={{width:"80%"}}
-                  zIndexInverse={1000}
+                    style={styles.dropdown}
+                    open={filiOpen}
+                    value={filiValue}
+                    items={fili}
+                    setOpen={setFiliOpen}
+                    setValue={setFiliValue}
+                    setItems={setFili}
+                    placeholder="Filial"
+                    placeholderStyle={styles.placeholderStyles}
+                    autoScroll={true}
+                    zIndex={2000}
+                    containerStyle={{width:"80%"}}
+                    zIndexInverse={1000}
+                    closeOnBackPressed={true}
+                    disabled={disb}
+                    listMode="SCROLLVIEW"
+                    textStyle={{ color: "#ea9247" }}
                   />
               </View>
               <View styles={{marginTop: "10%"}}>
-                  <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : navigation.navigate('Home') }}>Entrar</BtDef>
+                  <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : entrar(empValue, filiValue) }}>Entrar</BtDef>
               </View>
 
           </View>
@@ -86,6 +119,7 @@ const styles = StyleSheet.create({
 
     container:{
         alignItems: "center",
+        backgroundColor: "#9b3c00"
     },
     form: {
     marginBottom: 100,
@@ -95,11 +129,13 @@ const styles = StyleSheet.create({
         paddingBottom: "15%",
     },
     placeholderStyles: {
-      color: "grey",
+      color: "#ea9247",
     },
     dropdown: {
       borderColor: "#B7B7B7",
+      backgroundColor: "#b6520f",
       height: 60,
+      elevation: 10,
     },
     getStarted: {
       backgroundColor: "#5188E3",
