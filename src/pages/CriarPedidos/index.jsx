@@ -68,6 +68,10 @@ export const CriarPedidos = () => {
 
     useEffect(() => {
         
+        const json = {
+            
+        }
+
     }, [checked])
 
     return (
