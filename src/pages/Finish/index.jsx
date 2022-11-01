@@ -9,6 +9,9 @@ import { useNavigation } from "@react-navigation/native"
 
 export const Finish = ({ route }) => {
     const navigator = useNavigation();
+
+    navigator.canGoBack() <= false
+
     const { desc } = route.params;
     return(
         <>
@@ -29,7 +32,7 @@ export const Finish = ({ route }) => {
 const styles = StyleSheet.create({
     container:{
         height: "100%",
-        backgroundColor: "green",
+        backgroundColor: "#d2691e",
         alignItems: "center",
         justifyContent: "center"
     }

@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import base from '../../api/json/base.json'
 import { EmpContext } from '../../contexts/emp';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const Select = () => {
 
@@ -54,7 +55,7 @@ export const Select = () => {
                   <Profile large={true} srcImg={profilePhoto}/>
               </View>
               <View style={styles.form}>
-                  <Text style={{color: "#ea9247"}}>Selecione uma empresa</Text>
+                  <Text style={{color: "#ea9247", paddingBottom: 5}}>Selecione uma empresa</Text>
                   <DropDownPicker
                     style={styles.dropdown}
                     open={empOpen}
@@ -66,12 +67,13 @@ export const Select = () => {
                     placeholder="Empresa"
                     placeholderStyle={styles.placeholderStyles}
                     autoScroll={true}
-                    zIndex={3000}
-                    zIndexInverse={1000}
+                    zIndex={4000}
+                    zIndexInverse={2000}
                     containerStyle={{width:"80%"}}
                     closeAfterSelecting={true}
                     listMode="SCROLLVIEW"
-                    textStyle={{ color: "#ea9247" }}
+                    textStyle={{ color: "white" }}
+                    dropDownContainerStyle={{ backgroundColor: "#d2691e" }}
                     onSelectItem={(value) => {
                       console.log(value)
                       const resultVal = base.filter(x => x._id === value.value)[0].filiais.map((item) => ({
@@ -85,7 +87,7 @@ export const Select = () => {
                   />
                   
                   <View style={{ height: 30 }}></View>
-                  <Text style={{color: "#ea9247"}}>Selecione uma Filial</Text>
+                  <Text style={{color: "#ea9247", paddingBottom: 5}}>Selecione uma Filial</Text>
                   <DropDownPicker
                     style={styles.dropdown}
                     open={filiOpen}
@@ -97,16 +99,20 @@ export const Select = () => {
                     placeholder="Filial"
                     placeholderStyle={styles.placeholderStyles}
                     autoScroll={true}
-                    zIndex={2000}
+                    zIndex={3000}
                     containerStyle={{width:"80%"}}
-                    zIndexInverse={1000}
+                    zIndexInverse={2000}
                     closeOnBackPressed={true}
                     disabled={disb}
                     listMode="SCROLLVIEW"
-                    textStyle={{ color: "#ea9247" }}
+                    textStyle={{ color: "white" }}
+                    dropDownContainerStyle={{ backgroundColor: "#d2691e" }}
                   />
               </View>
-              <View styles={{marginTop: "10%"}}>
+              <View styles={{marginTop: "10%", alignItems: "center", justifyContent: "center"}}>
+                  <TouchableOpacity>
+                    <Text style={{color: "white"}}>Criar uma nova base</Text>
+                  </TouchableOpacity>
                   <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : entrar(empValue, filiValue) }}>Entrar</BtDef>
               </View>
 

@@ -6,7 +6,7 @@ export const BtDef = ({icon, children, onPress, color}) => {
     return(
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={onPress}>
-                { icon ? <Icon name={icon} type='font-awesome' color={color} /> : <Text style={{ color: "#b6520f", elevation: 5 }}>{children}</Text>}
+                { icon ? <Icon name={icon} type='font-awesome' color={color} /> : <Text style={{ color: "white", elevation: 5 }}>{children}</Text>}
             </TouchableOpacity>
         </View>
     )
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         padding: 10,
+        alignItems: "center",
     },
 
     button: {

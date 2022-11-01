@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "acaraje-test-app",
-    "slug": "acaraje-test-app",
+    "name": "SGI Ped",
+    "slug": "SGI-Ped",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.GCMSistemas.SGIPed"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "81d7c148-1bdd-4dce-aa00-f80795deac0f"
+      }
     }
   }
 }

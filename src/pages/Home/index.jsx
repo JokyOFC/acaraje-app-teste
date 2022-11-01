@@ -29,8 +29,8 @@ export const Home = () => {
                     <Profile srcImg={profilePhoto}/>
                 </View>
                 <View style={{ flex:1, flexDirection: "column", paddingLeft: 20, width: 80 }}>
-                    <Text style={{ fontSize: 20, width: "100%" }}>{baseCur.name}</Text>
-                    <Text>{filiCur.name}</Text>
+                    <Text style={{ fontSize: 25, width: "100%", fontWeight: "bold" }}>{baseCur.name}</Text>
+                    <Text style={{ fontSize: 15, width: "100%" }}>{filiCur.name}</Text>
                 </View>
             </View>
             <View style={styles.body}>
@@ -39,7 +39,7 @@ export const Home = () => {
                     <View style={{flexDirection: "column"}}>
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Pedidos</Text>
-                            <View style={{width: "35%"}}></View>
+                            <View style={{width: "26%"}}></View>
                             <BtDef  onPress={() => navigation.navigate('Pedidos')} icon="chevron-right"/>
                         </View>
                         <View
@@ -52,7 +52,7 @@ export const Home = () => {
                         />
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Produtos</Text>
-                            <View style={{width: "32%"}}></View>
+                            <View style={{width: "24%"}}></View>
                             <BtDef  onPress={() => navigation.navigate('Produtos')} icon="chevron-right"/>
                         </View>
                         <View
@@ -65,7 +65,7 @@ export const Home = () => {
                         />
                         <View style={styles.product}>
                             <Text style={{fontSize: 25}}>Pagamentos</Text>
-                            <View style={{width: "22%"}}></View>
+                            <View style={{width: "14%"}}></View>
                             <BtDef onPress={() => navigation.navigate('Pagamentos')} icon="chevron-right"/>
                         </View>
                         <View
@@ -77,8 +77,8 @@ export const Home = () => {
                             }}
                         />
                         <View style={styles.product}>
-                            <Text style={{fontSize: 25}}>Criar Pedidos</Text>
-                            <View style={{width: "20%"}}></View>
+                            <Text style={{fontSize: 25}}>Vendas</Text>
+                            <View style={{width: "29%"}}></View>
                             <BtDef onPress={() => navigation.navigate('CriarPedido')} icon="chevron-right"/>
                         </View>
                         

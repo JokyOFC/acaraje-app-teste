@@ -46,7 +46,7 @@ export const Pedido = ({ route, navigation }) => {
                                                         <View style={{ display: "flex", flexDirection: "row",  width: "100%", alignItems: "center", justifyContent: "flex-end" }}>
                                                             <Text style={{ color: "green" }}>R${prod.item.price}.00</Text>
                                                             <Text style={{ paddingLeft: "2%", paddingRight: "2%" }}>X</Text>
-                                                            <TextInput label={prod.quantity} disabled={true} style={{maxHeight: 50, minWidth: 25, borderRadius: 5, marginRight: "15%", textAlign: "center", justifyContent: "center"}}/>
+                                                            <TextInput label={prod.quantity} disabled={true} style={{maxHeight: 50, minWidth: 25, borderRadius: 5, marginRight: "15%", textAlign: "center", justifyContent: "center", backgroundColor: "#ea9247", color: "white"}}/>
                                                         </View>
                                                     </View>
                                             )
@@ -61,8 +61,8 @@ export const Pedido = ({ route, navigation }) => {
                                             formHorizontal={true} 
                                             radio_props={radio_props}
                                             initial={0}
-                                            buttonColor={'#BBBBBB'}
-                                            selectedButtonColor={'#BBBBBB'}
+                                            buttonColor={'#ea9247'}
+                                            selectedButtonColor={'#ea9247'}
                                             animation={true}
                                             buttonSize={12}
                                             labelStyle={{ paddingRight: "3%" }} 
@@ -78,10 +78,11 @@ export const Pedido = ({ route, navigation }) => {
                                 <View style={{display:"flex",flexDirection:"row", padding: "2%"}}>
                                     <CheckBox 
                                         value={data.finished}
+                                        color="#ea9247"
                                     />
                                     <Text style={{ paddingLeft: "2%"}}>Finalizado</Text>
                                 </View>
-                                <View style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around", paddingLeft: "10%" }}>
+                                <View style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around", paddingLeft: "2%" }}>
                                     <BtDef onPress={() => navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!"})}> Cancelar </BtDef>
                                     <BtDef onPress={() => navigator.goBack()} > Voltar </BtDef>
                                 </View>

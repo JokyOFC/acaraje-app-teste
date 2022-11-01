@@ -7,8 +7,8 @@ export const DottedCard = ({ children, onPress, icon }) => {
     return(
         <TouchableOpacity onPress={onPress} style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
             <View style={styles.container}>
-                <View style={{ alignItems: "center", padding: "25%"}}>
-                    { icon ? <Icon size={30} iconStyle='' name={icon} type='font-awesome' color='#D9D9D9' /> : ""}
+                <View style={{ justifyContent: "center", alignItems: "center"}}>
+                    { icon && <Icon size={30} iconStyle='' name={icon} type='font-awesome' color='#ea9247' />}
                     {children}
                 </View>
             </View>
@@ -19,12 +19,14 @@ export const DottedCard = ({ children, onPress, icon }) => {
 const styles = StyleSheet.create({
     container: {
         borderRadius: 25,
-        minHeight: 200,
+        height: 150,
         padding:25,
         width: "85%",
         margin: 10,
         borderWidth:2,
         borderStyle: 'dashed',
-        borderColor:'#D9D9D9',
+        borderColor:'#ea9247',
+        alignItems: "center",
+        justifyContent: "center"
     }
 })

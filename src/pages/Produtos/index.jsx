@@ -15,21 +15,21 @@ export const Produtos = () => {
             <View style={styles.container}>
                 <Text style={{fontSize: 25}}>Produtos</Text>
                 <ScrollView>
+                    <DottedCard onPress={() => navigator.navigate('Produto', { isNew: true, prodId: "" })} icon="plus">
+                        <Text style={{ color:"#ea9247" }}>Criar Produto</Text>
+                    </DottedCard>
                     {
                         products.map((data) => {
                             return(
-                            <Card key={data._id} onPress={() => navigator.navigate('Produto', { isNew: false, prodId: data._id })}>
+                            <Card key={data._id} onPress={() => navigator.navigate('Produto', { isNew: false, prodId: data._id }) } tam={150}>
                                 <View style={{ padding:"15%" , alignItems: "center", justifyContent: "center"}}>
-                                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>{data.name}</Text>
+                                    <Text style={{ fontSize: 18, fontWeight: "bold", color:"white" }}>{data.name}</Text>
                                     <Text style={{ fontSize: 18, color:"green", paddingTop: 10 }}> R${data.price}.00 </Text>
                                 </View>
                             </Card>
                             )
                         })
                     }
-                    <DottedCard onPress={() => navigator.navigate('Produto', { isNew: true, prodId: "" })} icon="plus">
-                        <Text style={{ marginTop: 10, color:"#D9D9D9" }}>Criar Produto</Text>
-                    </DottedCard>
                 </ScrollView>
             </View>
         </SafeAreaView>

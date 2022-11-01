@@ -33,7 +33,7 @@ export const Routes = () => {
         <Stack.Screen name="Pagamentos" component={Pagamentos} options={{headerShown: false}} />
         <Stack.Screen name="Pagamento" component={Pagamento} options={{headerShown: false}} />
 
-        <Stack.Screen name="Finish" component={Finish} options={{headerShown: false}} />
+        <Stack.Screen name="Finish" component={Finish} options={{headerShown: false, headerBackVisible:false }} />
      </Stack.Navigator>   
     )
 }

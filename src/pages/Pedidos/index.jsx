@@ -34,8 +34,8 @@ export const Pedidos = () => {
                         <RadioForm formHorizontal={true} 
                             radio_props={radio_props}
                             initial={0}
-                            buttonColor={'#BBBBBB'}
-                            selectedButtonColor={'#BBBBBB'}
+                            buttonColor={'#ea9247'}
+                            selectedButtonColor={'#ea9247'}
                             animation={true}
                             buttonSize={12}
                             labelStyle={{ paddingRight: "3%" }}
@@ -58,21 +58,21 @@ export const Pedidos = () => {
                                 return(
                                 <Card key={order._id} onPress={() => {navigator.navigate('Pedido', {
                                     orderId: order._id
-                                })}}>
+                                })}} pad={25}>
                                     <View>
                                         <View>
-                                            <Text style={{fontSize: 20}}>
+                                            <Text style={{fontSize: 20, color: "white"}}>
                                                 {order.id} - {order.cliente}
                                             </Text>
                                         </View>
                                         <View style={{paddingLeft: "3%", paddingTop: "1%"}}>
-                                            <Text style={{ color: "#AAAAAA"}}>
+                                            <Text style={{ color: "#ebebeb"}}>
                                                 Qntd. de Produtos: {order.products.length}
                                             </Text>
-                                            <Text style={{ color: "#AAAAAA"}}>
+                                            <Text style={{ color: "#ebebeb"}}>
                                                 Pagamento: {order.paymentMethod.name}
                                             </Text>
-                                            <Text style={{ color: "#AAAAAA"}}>
+                                            <Text style={{ color: "#ebebeb"}}>
                                                 Status: {order.finished === true ? <Text style={{ color: "green"}}>Finalizado</Text> : <Text style={{ color: "red"}}>Em Andamento</Text>}
                                             </Text>
                                         </View>
@@ -84,7 +84,7 @@ export const Pedidos = () => {
                                         <Text style={{ color: "green" }}>R${order.total}.00</Text>
                                     </View>
                                         <View style={{alignItems: "flex-end", justifyContent: "flex-end"}}>
-                                            <Text style={{fontSize: 12, color: "#AAAAAA"}}>{data}</Text>
+                                            <Text style={{fontSize: 12, color: "#ebebeb"}}>{data}</Text>
                                         </View>
                                 </Card>
                             )})
