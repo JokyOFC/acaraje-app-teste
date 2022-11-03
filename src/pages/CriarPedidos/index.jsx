@@ -1,11 +1,11 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert } from "react-native"
 
-import data from '../../api/json/products.json'
+// import data from '../../api/json/products.json'
 
-import payments from '../../api/json/payments.json'
+// import payments from '../../api/json/payments.json'
 
 import CheckBox from 'expo-checkbox';
 
@@ -18,7 +18,13 @@ import { useNavigation } from "@react-navigation/native";
 
 import RadioForm from "react-native-simple-radio-button";
 
+import { EmpContext } from "../../contexts/emp";
+
+import api from "../../api/api";
+
 export const CriarPedidos = () => {
+
+    const { empr, filiais, profilePhoto } = useContext(EmpContext)
     
     const navigator = useNavigation();
     
@@ -28,11 +34,35 @@ export const CriarPedidos = () => {
 
     const [ productcur, setProductCur ] = useState([])
 
+    
+    const [payments, setPayments] = useState([])
+    
+    const [products, setProducts] = useState([])
+    
+    async function listProducts() {
+        await api.get('/products').then((response) => {
+            console.log(response.data)
+            setProducts(response.data)
+        })
+    }
+    
+    async function listPay() {
+        await api.get('/payments').then((response) => {
+            console.log(response.status)
+            setPayments(response.data)
+        })
+    }
+
+    console.log(payments)
+    useEffect(() => {
+        listPay()
+        listProducts()
+    }, [])
+
     const payProd = payments.map((data) => {
         return { label: data.name, value: data._id }
     })
 
-    const [products, setProducts] = useState(data)
 
     function handleUpdateQuantityItems(id, operation) {
         const productUpdated = products.map(product => {
@@ -73,6 +103,10 @@ export const CriarPedidos = () => {
         }
 
     }, [checked])
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <SafeAreaView>

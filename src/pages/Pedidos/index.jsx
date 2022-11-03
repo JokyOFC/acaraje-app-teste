@@ -1,11 +1,11 @@
 
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { SafeAreaView, ScrollView, StyleSheet, View, Text } from "react-native"
 
 import { Card } from "../../components/Card"
 
-import orders from "../../api/json/orders.json"
+// import orders from "../../api/json/orders.json"
 // import { RadioButton } from "react-native-paper"
 
 import { useNavigation } from "@react-navigation/native";
@@ -13,17 +13,36 @@ import { useNavigation } from "@react-navigation/native";
 import RadioForm from "react-native-simple-radio-button";
 import { format } from "date-fns";
 
+import { EmpContext } from "../../contexts/emp";
+
+import api from "../../api/api";
+
 export const Pedidos = () => {
+
+    const { empr, filiais, profilePhoto } = useContext(EmpContext)
 
     const navigator = useNavigation();
     
     const [ checked, setChecked ] = useState(0)
+
+    const [ orders, setOrder ] = useState([])
     
     const radio_props = [
         {label: 'Todos', value: checked},
         {label: 'Ordenar Por X', value: checked},
         {label: 'Ordenar Por Y', value: checked},
     ]
+
+    useEffect(() => {
+        async function findOrders() {
+            const response = await api.post('/orders/base', { id: empr })
+
+            setOrder(response.data)
+
+        }
+
+        findOrders()
+    }, [])
 
     return (
         <SafeAreaView style={{ flex: 1, height: 500 }}>
@@ -49,6 +68,9 @@ export const Pedidos = () => {
                             orders.map((order) => {
                                 // const [ page, setPage ] = useState()
                                 // setPage()
+
+                                console.log(order._id)
+
                                 const datavenda = new Date(order.createdAt);
                                 let data = format(datavenda, "dd/MM/yyyy")
                                 // let data = datavenda.toLocaleDateString()
@@ -57,12 +79,13 @@ export const Pedidos = () => {
                                 // let da = new Intl.DateTimeFormat('pt-BR', { day: '2-digit' }).format(datavenda);
                                 return(
                                 <Card key={order._id} onPress={() => {navigator.navigate('Pedido', {
-                                    orderId: order._id
+                                    orderId: order._id,
+                                    orderObj: order
                                 })}} pad={25}>
                                     <View>
                                         <View>
                                             <Text style={{fontSize: 20, color: "white"}}>
-                                                {order.id} - {order.cliente}
+                                                {order.cliente}
                                             </Text>
                                         </View>
                                         <View style={{paddingLeft: "3%", paddingTop: "1%"}}>

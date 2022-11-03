@@ -1,5 +1,5 @@
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { StyleSheet, Text, Button, View } from "react-native"
 
@@ -11,6 +11,9 @@ import { useNavigation } from '@react-navigation/native';
 import { EmpContext } from "../../contexts/emp";
 
 import base from "../../api/json/base.json"
+import { useEffect } from "react";
+
+import api from "../../api/api";
 
 export const Home = () => {
 
@@ -18,9 +21,53 @@ export const Home = () => {
 
     const navigation = useNavigation();
 
-    const baseCur = base.find(e => e._id === empr)
+    //const baseCur = base.find(e => e._id === empr)
 
-    const filiCur = baseCur.filiais.find(fil => fil.filicod === filiais)
+    const [ baseCur, setBaseCur ] = useState({})
+
+    const [ filiCur, setFiliCur ] = useState([])
+
+    // console.log(empr)
+    
+    // console.log(baseCur)
+
+    
+    // useEffect(() => {
+    //     console.log("consultando basecur")
+    //     console.log(baseCur)
+    //     // let basefilis = baseCur.filiais
+    //     // setFiliCur(basefilis.find(fil => fil.filicod === filiais))
+    // }, [baseCur])
+    
+    async function getBase() {
+        try{
+            await api.post('/base/id', { id:empr }).then((response) => {
+                // console.log(response)
+                setBaseCur(response.data)
+                // console.log(" responseData ")
+                // console.log(response.data)
+                // let basefilis = baseCur.filiais
+                // setFiliCur(basefilis.find(fil => fil.filicod === filiais))
+            }).catch(function(error) {
+                console.log(error)
+            })
+            // console.log(response.data.filiais)
+            // console.log("listando baseCur")
+            // console.log(baseCur)
+        } catch(error) {
+            console.log(error)
+        }
+
+    }
+
+    useEffect(() => {
+
+        getBase()
+
+        console.log("basecur!!")
+        console.log(baseCur)
+    },[])
+    // console.log(baseCur)
 
     return(
         <View style={styles.container}>

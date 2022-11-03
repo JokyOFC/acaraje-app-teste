@@ -13,6 +13,10 @@ import base from '../../api/json/base.json'
 import { EmpContext } from '../../contexts/emp';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import axios from 'axios';
+
+import api from '../../api/api';
+
 export const Select = () => {
 
     const navigation = useNavigation();
@@ -38,12 +42,31 @@ export const Select = () => {
       const [ disb, setDisb ] = useState(true)
 
       useEffect(() => {
-        const result = base.map((item) => ({
-          label: item.name, 
-          value: item._id
-        }))
 
-        setEmp(result)
+        async function loadReports() {
+
+          try {
+             const response = await api.get('/bases');
+  
+             console.log(response.data);
+             
+             let base = response.data
+
+             const result = base.map((item) => ({
+               label: item.name, 
+               value: item._id
+             }))
+       
+             setEmp(result)
+
+          } catch(error) {
+             console.log(error)
+          }
+  
+      }
+  
+      loadReports(); 
+
       },[])
 
       const { entrar, profilePhoto } = useContext(EmpContext)
@@ -75,14 +98,19 @@ export const Select = () => {
                     textStyle={{ color: "white" }}
                     dropDownContainerStyle={{ backgroundColor: "#d2691e" }}
                     onSelectItem={(value) => {
-                      console.log(value)
-                      const resultVal = base.filter(x => x._id === value.value)[0].filiais.map((item) => ({
-                        label: item.name, 
-                        value: item.filicod
-                      }))
-              
-                      setFili(resultVal)
-                      setDisb(false)
+                      console.log(value.value)
+
+                      api.post('/base/id', { id: value.value }).then((response) => {
+                        console.log(response.data)
+                        const resultVal = response.data.filiais.map((item) => ({
+                          label: item.name, 
+                          value: item.filicod
+                        }))
+                
+                        setFili(resultVal)
+                        setDisb(false)
+
+                      })
                     }}
                   />
                   

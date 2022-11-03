@@ -1,9 +1,7 @@
 
 import { StyleSheet, View, Text, Alert, ScrollView } from "react-native"
 
-import { useState } from "react";
-
-import orders from "../../api/json/orders.json"
+// import orders from "../../api/json/orders.json"
 
 import { format } from "date-fns";
 import { TextInput } from "react-native-paper";
@@ -14,17 +12,44 @@ import { BtDef } from "../../components/BtDef";
 import CheckBox from 'expo-checkbox';
 
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useContext, useState } from "react";
+
+import { EmpContext } from "../../contexts/emp";
+
+import api from "../../api/api";
 
 export const Pedido = ({ route, navigation }) => {
     
-    const { orderId } = route.params;
+    const { orderId, orderObj } = route.params;
+
+    console.log([orderObj])
 
     const navigator = useNavigation();
+
+    const { empr, filiais, profilePhoto } = useContext(EmpContext)
+    
+    // const [ orders, setOrder ] = useState([])
+    
+    // setOrder([orderObj])
+
+    let orders = [orderObj]
+
+    // useEffect(() => {
+    //     async function pedido() {
+    //         const response = await api.post('/orders/base', { id:empr } )
+    
+    //         setOrder(response.data)
+    //         console.log(response.data)
+    //     }
+
+    //     pedido()
+
+    // }, []) 
 
     return(
         <View style={ styles.container }>
             {
-                orders.filter(x => x._id === orderId).map((data) => {
+                orders.map((data) => {
                     const [ checked, setChecked ] = useState(0)
                     const radio_props = [{ label: data.paymentMethod.name, value: 0 }]
                     console.log(radio_props)
