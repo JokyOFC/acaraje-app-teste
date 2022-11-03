@@ -34,30 +34,26 @@ export const CriarPedidos = () => {
 
     const [ productcur, setProductCur ] = useState([])
 
-    
+
+
     const [payments, setPayments] = useState([])
     
     const [products, setProducts] = useState([])
     
     async function listProducts() {
         await api.get('/products').then((response) => {
-            console.log(response.data)
             setProducts(response.data)
         })
     }
     
     async function listPay() {
         await api.get('/payments').then((response) => {
-            console.log(response.status)
             setPayments(response.data)
         })
     }
 
-    console.log(payments)
-    useEffect(() => {
-        listPay()
-        listProducts()
-    }, [])
+    // console.log(payments)
+    
 
     const payProd = payments.map((data) => {
         return { label: data.name, value: data._id }
@@ -97,16 +93,12 @@ export const CriarPedidos = () => {
     }, [products])
 
     useEffect(() => {
-        
-        const json = {
-            
-        }
-
-    }, [checked])
+        listPay()
+    }, [])
 
     useEffect(() => {
-
-    }, [])
+        listProducts()
+    }, [payments])
 
     return (
         <SafeAreaView>
