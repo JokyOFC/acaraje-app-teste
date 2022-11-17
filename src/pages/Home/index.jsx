@@ -14,10 +14,11 @@ import base from "../../api/json/base.json"
 import { useEffect } from "react";
 
 import api from "../../api/api";
+import { Divider } from "react-native-paper";
 
 export const Home = () => {
 
-    const { empr, filiais, profilePhoto } = useContext(EmpContext)
+    const { empr, filiais, profilePhoto, empall } = useContext(EmpContext)
 
     const navigation = useNavigation();
 
@@ -60,14 +61,23 @@ export const Home = () => {
 
     }
 
+    const filiname = empall.filiais.filter(x => x.filicod === filiais)[0].name
+    
     useEffect(() => {
 
         getBase()
 
         console.log("basecur!!")
         console.log(baseCur)
+
+        console.log("Filiaiss!!")
+        console.log(filiais)
+
+        console.log("EMPALL!")
+        console.log(empall)
     },[])
     // console.log(baseCur)
+
 
     return(
         <View style={styles.container}>
@@ -76,10 +86,21 @@ export const Home = () => {
                     <Profile srcImg={profilePhoto}/>
                 </View>
                 <View style={{ flex:1, flexDirection: "column", paddingLeft: 20, width: 80 }}>
-                    <Text style={{ fontSize: 25, width: "100%", fontWeight: "bold" }}>{baseCur.name}</Text>
-                    <Text style={{ fontSize: 15, width: "100%" }}>{filiCur.name}</Text>
+                    <Text style={{ fontSize: 25, width: "100%", fontWeight: "bold" }}>{empall.name}</Text>
+                    <Text style={{ fontSize: 15, width: "100%" }}>{filiname}</Text>
                 </View>
             </View>
+
+            <View
+                style={{
+                    borderBottomColor: '#DFDFDF',
+                    borderBottomWidth: 2,
+                    width: "50%",
+                    marginLeft: "25%",
+                    marginBottom: "5%"
+                }}
+            />
+
             <View style={styles.body}>
 
                 <View style={styles.wrapper}>
@@ -145,6 +166,7 @@ const styles = StyleSheet.create({
     header: {
         width: "100%",
         padding: "20%",
+        paddingBottom: "10%",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",

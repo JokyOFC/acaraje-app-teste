@@ -41,13 +41,17 @@ export const CriarPedidos = () => {
     const [products, setProducts] = useState([])
     
     async function listProducts() {
-        await api.get('/products').then((response) => {
+        await api.get('/products', { "BaseId": empr }).then((response) => {
+            console.log("dataofproducts")
+            console.log(response.data)
             setProducts(response.data)
         })
     }
     
     async function listPay() {
-        await api.get('/payments').then((response) => {
+        await api.get('/payments', { "BaseId": empr }).then((response) => {
+            console.log("dataofpayments")
+            console.log(response.data)
             setPayments(response.data)
         })
     }
@@ -100,13 +104,10 @@ export const CriarPedidos = () => {
         listProducts()
     }, [payments])
 
-    return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View>
-                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>Produtos</Text>
-                    <ScrollView style={{ maxHeight: 300 }}>
-                        {
+    const productsPopulated = () => {
+        return(
+            <>
+            {
                             products.map((Data) => {
 
                                 const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -135,6 +136,28 @@ export const CriarPedidos = () => {
                                 )
                             })
                         }
+            </>
+        )
+    }
+
+    const withoutProd = () => {
+        return(
+            <View style={{ minHeight: 300, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ color: '#ea9247', fontSize: 22}} > Sem Produtos! :( </Text>
+                <Text style={{ color: '#ea9247', fontSize: 12, marginTop: "2%"}}>Crie novos produtos na aba de produtos!</Text>
+            </View>
+        )
+    }
+
+    return (
+        <SafeAreaView>
+            <View style={styles.container}>
+                <View>
+                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>Produtos</Text>
+                    <ScrollView style={{ maxHeight: 300 }}>
+                        {
+                            !!products ? withoutProd() : productsPopulated()
+                        }
                     </ScrollView>
                 </View>
                 <View style={{ minHeight: '20%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -146,7 +169,8 @@ export const CriarPedidos = () => {
                     <ScrollView style={{ maxHeight: 110 }}>
                         <View style={{ paddingTop: "1%" }}>
                             <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
-                                <RadioForm formHorizontal={false}
+                                {
+                                    !!payProd ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{ color: '#ea9247', fontSize: 18}}>Sem formas de pagamentos!</Text></View> : (<RadioForm formHorizontal={false}
                                     radio_props={payProd}
                                     initial={0}
                                     buttonColor={'#ea9247'}
@@ -155,7 +179,8 @@ export const CriarPedidos = () => {
                                     buttonSize={12}
                                     labelStyle={{ paddingBottom: 10 }}
                                     onPress={(value) => {setChecked(value);}}
-                                />
+                                />)
+                                }
                             </View>
                         </View>
                     </ScrollView>
@@ -183,6 +208,6 @@ const styles = StyleSheet.create({
         paddingLeft: "10%",
         paddingRight: "10%",
         paddingBottom: "30%",
-        paddingTop: "2%"
+        paddingTop: "5%"
     }
 })

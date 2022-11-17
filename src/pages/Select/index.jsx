@@ -25,9 +25,7 @@ export const Select = () => {
     const [empValue, setEmpValue] = useState(null);
     
     const [emp, setEmp] = useState([
-        { label: "Emp1", value: "Emp1" },
-        { label: "Emp2", value: "Emp2" },
-        { label: "Emp3", value: "Emp3" },
+        { label: "Sem Conexão!", value: "sem conexão" },
     ]); 
 
     const [filiOpen, setFiliOpen] = useState(false);
@@ -78,7 +76,7 @@ export const Select = () => {
                   <Profile large={true} srcImg={profilePhoto}/>
               </View>
               <View style={styles.form}>
-                  <Text style={{color: "#ea9247", paddingBottom: 5}}>Selecione uma empresa</Text>
+                  <Text style={{color: "white", paddingBottom: 5}}>Selecione uma empresa</Text>
                   <DropDownPicker
                     style={styles.dropdown}
                     open={empOpen}
@@ -115,7 +113,7 @@ export const Select = () => {
                   />
                   
                   <View style={{ height: 30 }}></View>
-                  <Text style={{color: "#ea9247", paddingBottom: 5}}>Selecione uma Filial</Text>
+                  <Text style={{color: "white", paddingBottom: 5}}>Selecione uma Filial</Text>
                   <DropDownPicker
                     style={styles.dropdown}
                     open={filiOpen}
@@ -138,7 +136,7 @@ export const Select = () => {
                   />
               </View>
               <View styles={{marginTop: "10%", alignItems: "center", justifyContent: "center"}}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('CriarBase') }>
                     <Text style={{color: "white"}}>Criar uma nova base</Text>
                   </TouchableOpacity>
                   <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : entrar(empValue, filiValue) }}>Entrar</BtDef>

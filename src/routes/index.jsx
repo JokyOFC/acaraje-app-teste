@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Home } from "../pages/Home";
 import { Select } from "../pages/Select";
+import { CriarBase } from "../pages/CreateBase";
 
 import { Finish } from "../pages/Finish";
 
@@ -22,7 +23,8 @@ export const Routes = () => {
      <Stack.Navigator>
         <Stack.Screen name="Select" component={Select} options={{headerShown: false}} />
         <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
-        
+        <Stack.Screen name="CriarBase" component={CriarBase} options={{headerShown: false}}/>
+
         <Stack.Screen name="CriarPedido" component={CriarPedidos} options={{headerShown: false}} />
         <Stack.Screen name="Pedidos" component={Pedidos} options={{headerShown: false}} />
         <Stack.Screen name="Pedido" component={Pedido} options={{headerShown: false}} />
