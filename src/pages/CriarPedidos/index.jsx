@@ -41,7 +41,7 @@ export const CriarPedidos = () => {
     const [products, setProducts] = useState([])
     
     async function listProducts() {
-        await api.get('/products', { "BaseId": empr }).then((response) => {
+        await api.post('/products', { BaseId: empr }).then((response) => {
             console.log("dataofproducts")
             console.log(response.data)
             setProducts(response.data)
@@ -49,7 +49,7 @@ export const CriarPedidos = () => {
     }
     
     async function listPay() {
-        await api.get('/payments', { "BaseId": empr }).then((response) => {
+        await api.post('/payments', { BaseId: empr }).then((response) => {
             console.log("dataofpayments")
             console.log(response.data)
             setPayments(response.data)
@@ -156,7 +156,7 @@ export const CriarPedidos = () => {
                     <Text style={{ fontSize: 20, fontWeight: "bold" }}>Produtos</Text>
                     <ScrollView style={{ maxHeight: 300 }}>
                         {
-                            !!products ? withoutProd() : productsPopulated()
+                            products ===[] ? withoutProd() : productsPopulated()
                         }
                     </ScrollView>
                 </View>
@@ -170,7 +170,7 @@ export const CriarPedidos = () => {
                         <View style={{ paddingTop: "1%" }}>
                             <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
                                 {
-                                    !!payProd ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{ color: '#ea9247', fontSize: 18}}>Sem formas de pagamentos!</Text></View> : (<RadioForm formHorizontal={false}
+                                    payProd === [] ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{ color: '#ea9247', fontSize: 18}}>Sem formas de pagamentos!</Text></View> : (<RadioForm formHorizontal={false}
                                     radio_props={payProd}
                                     initial={0}
                                     buttonColor={'#ea9247'}

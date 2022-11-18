@@ -37,7 +37,10 @@ export const Pedidos = () => {
         async function findOrders() {
             const response = await api.post('/orders/base', { id: empr })
 
-            setOrder(response.data)
+            setOrder(...response.data)
+
+            console.log('there is orders by base!!')
+            console.log(orders)
 
         }
 
@@ -45,6 +48,7 @@ export const Pedidos = () => {
     }, [])
 
     const semPedidos = () => {
+        console.log("Não tenho pedidos!!")
         return(
             <View style={{ alignItems: "center", justifyContent: "center"}}>
                 <Text style={{ color: '#ea9247', fontSize: 25, marginTop: "75%"}} > Sem Pedidos! :( </Text>
@@ -54,6 +58,7 @@ export const Pedidos = () => {
     }
 
     const pedidosPopulated = () => {
+        console.log("Tenho pedidos!!")
         return(
             <View style={{ alignItems: "center" }}>
                                 {
@@ -128,7 +133,7 @@ export const Pedidos = () => {
                     </View>
                     <ScrollView style={{ maxHeight: "87%", maxWidth: 450 }}>
                         {
-                            !!orders ? semPedidos() : pedidosPopulated() 
+                            (orders && pedidosPopulated()) || semPedidos()
                         }
                     </ScrollView>
                 </View>

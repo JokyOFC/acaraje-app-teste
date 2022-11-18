@@ -1,14 +1,33 @@
 
+import { useContext, useState } from "react"
+
+import { EmpContext } from "../../contexts/emp";
+
 import { useNavigation } from "@react-navigation/native"
 import { SafeAreaView, StyleSheet, View, Text, ScrollView } from "react-native"
 
-import products from "../../api/json/products.json"
+// import products from "../../api/json/products.json"
 import { Card } from "../../components/Card"
 import { DottedCard } from "../../components/DottedCard"
+import { useEffect } from "react";
+
+import api from "../../api/api";
 
 export const Produtos = () => {
 
+    const { empr } = useContext(EmpContext)
+
     const navigator = useNavigation();
+
+    const [ products, setProducts ] = useState([])
+
+    useEffect(() => {
+        api.post('/products', { BaseId: empr }).then((result) => {
+            console.log("there is resultdata!")
+            console.log(result.data)
+            setProducts(result.data)
+        })
+    }, [])
 
     return(
         <SafeAreaView style={{ flex: 1, height: 500 }}>
@@ -20,11 +39,13 @@ export const Produtos = () => {
                     </DottedCard>
                     {
                         products.map((data) => {
+                            console.log("there is data!!")
+                            console.log(data)
                             return(
-                            <Card key={data._id} onPress={() => navigator.navigate('Produto', { isNew: false, prodId: data._id }) } tam={150}>
+                            <Card key={data._id} onPress={() => navigator.navigate('Produto', { isNew: false, prodId: data._id, data }) } tam={150}>
                                 <View style={{ padding:"15%" , alignItems: "center", justifyContent: "center"}}>
                                     <Text style={{ fontSize: 18, fontWeight: "bold", color:"white" }}>{data.name}</Text>
-                                    <Text style={{ fontSize: 18, color:"green", paddingTop: 10 }}> R${data.price}.00 </Text>
+                                    <Text style={{ fontSize: 18, color:"green", paddingTop: 10 }}> R${data.price.price}.00 </Text>
                                 </View>
                             </Card>
                             )

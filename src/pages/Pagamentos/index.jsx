@@ -1,16 +1,32 @@
 
 import { SafeAreaView, StyleSheet, View, Text, ScrollView } from "react-native"
 
-import payments from "../../api/json/payments.json"
+// import payments from "../../api/json/payments.json"
 import { Card } from "../../components/Card"
 import { DottedCard } from "../../components/DottedCard"
 
 import { useNavigation } from "@react-navigation/native"
+import { useEffect, useContext, useState } from "react"
+
+import api from "../../api/api"
+
+import { EmpContext } from "../../contexts/emp"
 
 export const Pagamentos = () => {
 
     const navigator = useNavigation();
-    
+
+    const { empr } = useContext(EmpContext)
+
+    const [ payments, setPayments ] = useState([])
+
+    useEffect(() => {
+        api.post('/payments', { BaseId: empr }).then((result) => {
+            console.log("there is resultdata!")
+            console.log(result.data)
+            setPayments(result.data)
+        })
+    },[])
 
     return(
         <SafeAreaView style={{ flex: 1, height: 500 }}>

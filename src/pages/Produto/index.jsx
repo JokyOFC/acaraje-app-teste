@@ -6,20 +6,24 @@ import { NavigationRouteContext, useNavigation } from "@react-navigation/native"
 
 import { BtDef } from '../../components/BtDef'
 
-import products from "../../api/json/products.json"
-import { useState } from "react"
+// import products from "../../api/json/products.json"
+import { useState, useContext, useEffect } from "react"
 
 export const Produto = ({ route, navigation }) => {
 
     const navigator = useNavigation()
 
-    const { prodId, isNew } = route.params
+    const { prodId, isNew, data } = route.params
 
     console.log(isNew)
     console.log(prodId)
+    
+    console.log("there is prod 1!!!")
+    console.log(data)
 
     const [ prodname, setProdName ] = useState();
     const [ prodprice, setProdPrice ] = useState(0);
+    const [ product, setProduct ] = useState({})
 
     return(
     <>
@@ -57,12 +61,15 @@ export const Produto = ({ route, navigation }) => {
     function Product() {
     
         console.log(prodId)
-        const prod = products.filter(x => x._id === prodId)[0]
+        // const prod = products.filter(x => x._id === prodId)[0]
         
-        const [ nome, setNome ] = useState(prod.name)
-        const [ preco, setPreco ] = useState(prod.price)
+        console.log("there is prod!!")
+        console.log(product)
 
-        console.log(prod)
+        const [ nome, setNome ] = useState(data.name)
+        const [ preco, setPreco ] = useState(data.price)
+
+        // console.log(prod)
 
         return(
             <KeyboardAvoidingView>
@@ -73,7 +80,7 @@ export const Produto = ({ route, navigation }) => {
                                 <Text style={{ fontSize: 15 }}>Nome do produto</Text>
                                 <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setNome(value) }} value={nome} placeholder="Digite aqui o nome do produto" style={styles.inputTexto}/>
                                 <Text style={{ fontSize: 15, paddingTop: 27 }}>Preço</Text>
-                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setPreco(value) }} value={preco.toString()} placeholder="Digite aqui o preço do produto" style={styles.inputTexto} keyboardType="numeric"/>
+                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setPreco(value) }} value={preco.price.toString()} placeholder="Digite aqui o preço do produto" style={styles.inputTexto} keyboardType="numeric"/>
                         </View>
                         <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
                             <BtDef onPress={() => {
