@@ -199,7 +199,7 @@ export const CriarPedidos = () => {
                         <View style={{ paddingTop: "1%" }}>
                             <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
                                 {
-                                    payProd === [] ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{ color: '#ea9247', fontSize: 18}}>Sem formas de pagamentos!</Text></View> : (<RadioForm formHorizontal={false}
+                                    payProd === [] || !payProd || payProd.length ===0  ? <View style={{alignItems: 'center', justifyContent: 'center'}}><Text style={{ color: '#ea9247', fontSize: 18}}>Sem formas de pagamentos!</Text></View> : (<RadioForm formHorizontal={false}
                                     radio_props={payProd}
                                     initial={0}
                                     buttonColor={'#ea9247'}

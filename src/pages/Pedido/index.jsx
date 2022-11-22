@@ -65,13 +65,17 @@ export const Pedido = ({ route, navigation }) => {
                                 <ScrollView style={{ height: "35%" }}>
                                     <View style={{ padding: "2%" }}>
                                         {data.products.map((prod) => {
+                                            console.log("there is prod!")
+                                            console.log(prod)
                                             return(
-                                                    <View key={prod._id} style={{ display: "flex", flexDirection: "row", alignItems: "center", paddingTop: "10%", paddingBottom: "10%" }}>
-                                                        <Text>{prod.item.name}</Text>
-                                                        <View style={{ display: "flex", flexDirection: "row",  width: "100%", alignItems: "center", justifyContent: "flex-end" }}>
+                                                    <View key={prod.item._id} style={{ display: "flex", flexDirection: "row", alignItems: "center", paddingTop: "10%", paddingBottom: "10%" }}>
+                                                        <View style={{ display:"flex", width: "59%" }}>
+                                                            <Text>{prod.item.name}</Text>
+                                                        </View>
+                                                        <View style={{ display: "flex", width: "50%", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
                                                             <Text style={{ color: "green" }}>R${prod.item.price.price}.00</Text>
                                                             <Text style={{ paddingLeft: "2%", paddingRight: "2%" }}>X</Text>
-                                                            <TextInput label={prod.quantity} disabled={true} style={{maxHeight: 50, minWidth: 25, borderRadius: 5, marginRight: "15%", textAlign: "center", justifyContent: "center", backgroundColor: "#ea9247", color: "white"}}/>
+                                                            <TextInput value={prod.amount.toString()} disabled={true} style={{maxHeight: 50, minWidth: 25, borderRadius: 5, marginRight: "15%", textAlign: "center", justifyContent: "center", backgroundColor: "#ea9247", color: "white", fontSize: 12}}/>
                                                         </View>
                                                     </View>
                                             )

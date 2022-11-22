@@ -10,14 +10,14 @@ export const BoxSearch = ({ filiaisBox }) => {
     const [ filiais, setFiliais ] = useState([{}]);
 
     return(
-        <View>
+        <View style={ styles.container }>
             
-            <View>
-                <Icon name="" type="" color=""/>
-                <TextInput />
+            <View style={{ display: 'flex',flexDirection:'row' ,height: 50, alignItems: 'center', marginLeft: 10 }}>
+                <Icon name="search" type="font-awesome" color="white"/>
+                <TextInput placeholder="Buscar filial..." style={{ padding: 10, color: 'white' }}/>
             </View>
-
             <Divider />
+
             
             <ScrollView>
                 {filiais.map((filial) => {
@@ -32,8 +32,8 @@ export const BoxSearch = ({ filiaisBox }) => {
 
             <Divider />
 
-            <TouchableOpacity>
-                <Icon name="" type="" color=""/>
+            <TouchableOpacity style={{ height: 50, padding: 13 }}>
+                <Icon name="plus" type="font-awesome" color="white"/>
             </TouchableOpacity>
 
         </View>
@@ -42,5 +42,8 @@ export const BoxSearch = ({ filiaisBox }) => {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#d2691e',
+        height:300,
+        borderRadius: 10
     }
 })

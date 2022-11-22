@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Alert } from "react-native"
+import { Text, StyleSheet, View, Alert, Pressable } from "react-native"
 
 import { Profile } from "../../components/Profile"
 import { BtDef } from "../../components/BtDef"
@@ -134,9 +134,9 @@ export const Select = () => {
                   />
               </View>
               <View styles={{marginTop: "10%", alignItems: "center", justifyContent: "center"}}>
-                  <TouchableOpacity onPress={() => navigation.navigate('CriarBase') }>
+                  <Pressable onPress={() => {navigation.navigate('CriarBase')} }>
                     <Text style={{color: "white"}}>Criar uma nova base</Text>
-                  </TouchableOpacity>
+                  </Pressable>
                   <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : entrar(empValue, filiValue) }}>Entrar</BtDef>
               </View>
 
