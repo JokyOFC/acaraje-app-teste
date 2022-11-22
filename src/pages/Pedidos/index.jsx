@@ -33,17 +33,18 @@ export const Pedidos = () => {
         {label: 'Ordenar Por Y', value: checked},
     ]
 
+    async function findOrders() {
+        await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {
+            console.log(res.data)    
+            setOrder(res.data)
+        })
+
+        console.log('there is orders by base!!')
+        console.log(orders)
+
+    }
+
     useEffect(() => {
-        async function findOrders() {
-            const response = await api.post('/orders/base', { id: empr })
-
-            setOrder(...response.data)
-
-            console.log('there is orders by base!!')
-            console.log(orders)
-
-        }
-
         findOrders()
     }, [])
 
@@ -78,7 +79,7 @@ export const Pedidos = () => {
                                         <Card key={order._id} onPress={() => {navigator.navigate('Pedido', {
                                             orderId: order._id,
                                             orderObj: order
-                                        })}} pad={25}>
+                                        })}} pad={25} tam={225}>
                                             <View>
                                                 <View>
                                                     <Text style={{fontSize: 20, color: "white"}}>
@@ -133,7 +134,7 @@ export const Pedidos = () => {
                     </View>
                     <ScrollView style={{ maxHeight: "87%", maxWidth: 450 }}>
                         {
-                            (orders && pedidosPopulated()) || semPedidos()
+                            !orders || orders === [] || orders.length === 0 ? semPedidos() : pedidosPopulated()
                         }
                     </ScrollView>
                 </View>

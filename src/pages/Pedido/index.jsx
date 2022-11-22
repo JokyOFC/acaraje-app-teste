@@ -69,7 +69,7 @@ export const Pedido = ({ route, navigation }) => {
                                                     <View key={prod._id} style={{ display: "flex", flexDirection: "row", alignItems: "center", paddingTop: "10%", paddingBottom: "10%" }}>
                                                         <Text>{prod.item.name}</Text>
                                                         <View style={{ display: "flex", flexDirection: "row",  width: "100%", alignItems: "center", justifyContent: "flex-end" }}>
-                                                            <Text style={{ color: "green" }}>R${prod.item.price}.00</Text>
+                                                            <Text style={{ color: "green" }}>R${prod.item.price.price}.00</Text>
                                                             <Text style={{ paddingLeft: "2%", paddingRight: "2%" }}>X</Text>
                                                             <TextInput label={prod.quantity} disabled={true} style={{maxHeight: 50, minWidth: 25, borderRadius: 5, marginRight: "15%", textAlign: "center", justifyContent: "center", backgroundColor: "#ea9247", color: "white"}}/>
                                                         </View>

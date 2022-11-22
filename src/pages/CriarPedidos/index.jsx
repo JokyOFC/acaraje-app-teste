@@ -1,7 +1,7 @@
 
 import { useEffect, useState, useContext } from "react";
 
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert } from "react-native"
+import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert, Modal, Pressable } from "react-native"
 
 // import data from '../../api/json/products.json'
 
@@ -9,7 +9,7 @@ import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert 
 
 import CheckBox from 'expo-checkbox';
 
-import { RadioButton } from 'react-native-paper';
+// import { RadioButton } from 'react-native-paper';
 
 import { BtDef } from "../../components/BtDef";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,6 +21,7 @@ import RadioForm from "react-native-simple-radio-button";
 import { EmpContext } from "../../contexts/emp";
 
 import api from "../../api/api";
+import axios from "axios";
 
 export const CriarPedidos = () => {
 
@@ -34,12 +35,10 @@ export const CriarPedidos = () => {
 
     const [ productcur, setProductCur ] = useState([])
 
-
-
     const [payments, setPayments] = useState([])
     
     const [products, setProducts] = useState([])
-    
+
     async function listProducts() {
         await api.post('/products', { BaseId: empr }).then((response) => {
             console.log("dataofproducts")
@@ -55,6 +54,12 @@ export const CriarPedidos = () => {
             setPayments(response.data)
         })
     }
+    
+    useEffect(() => {
+        listPay()
+        listProducts()      
+    }, [])
+
 
     // console.log(payments)
     
@@ -80,62 +85,84 @@ export const CriarPedidos = () => {
         });
 
 
-        const prodCurT = productUpdated.filter(e => e.ammount >=1 ).map((e) => e._id)
+        const prodCurT = productUpdated.filter(e => e.ammount >=1 ).map((e) => { return { amount: e.ammount, item: e._id } })
 
         setProducts(productUpdated)
         setProductCur(prodCurT)
 
+        console.log("--------------------------------------")
+
+        console.log("There is products again!!")
+        console.log(products)
+        console.log("There is products cur!")
+        console.log(productcur)
+
+        console.log("--------------------------------------")
+
+        console.log("There is productAAAA")
+        console.log(productUpdated)
     }
 
+   
     useEffect(() => {
+        if(products === []) return
         const newTotal = products.reduce((prev, current) =>
-            prev + (current.ammount * current.price)
+            prev + (current.ammount * current.price.price)
             , 0)
         // console.log(newTotal)
         setTotal(newTotal)
 
     }, [products])
 
-    useEffect(() => {
-        listPay()
-    }, [])
 
-    useEffect(() => {
-        listProducts()
-    }, [payments])
+
+    // useEffect(() => {
+        
+    // }, [payments])
+    const [checkBoxTest, setCheckBoxTest] = useState([])
+
+    function toggleBoxCheck(name) {
+        return setCheckBoxTest({...checkBoxTest,[name]: !checkBoxTest[name]})
+    }
+
+    console.log(checkBoxTest, "testeeee")
+
+    const [modalVisible, setModalVisible] = useState(false);
 
     const productsPopulated = () => {
+
         return(
             <>
             {
-                            products.map((Data) => {
+            
+            products.map((Data) => {
+                // let toggleCheckBox = false
 
-                                const [toggleCheckBox, setToggleCheckBox] = useState(false);
+                return (
+                    <View key={Data._id} style={{ display: "flex", flexDirection: 'row', alignItems: 'center', paddingTop: "7%" }}>
+                        <View style={{ display: "flex", flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", maxWidth: 180, minHeight: 50 }}>
+                                <Text style={{ paddingLeft: 10 }}>{Data.name}</Text>
+                            </View>
+                        </View>
+                        <View style={{ display: 'flex', alignContent: 'center', flexDirection: 'row', alignItems: "center", marginLeft: "auto" }}>
 
-                                return (
-                                    <View key={Data._id} style={{ display: "flex", flexDirection: 'row', alignItems: 'center', paddingTop: "7%" }}>
-                                        <View style={{ display: "flex", flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", maxWidth: 180, minHeight: 50 }}>
-                                                <Text style={{ paddingLeft: 10 }}>{Data.name}</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{ display: 'flex', alignContent: 'center', flexDirection: 'row', alignItems: "center", marginLeft: "auto" }}>
+                            <Text style={{ color: "green", paddingLeft: 10 }}>R$ {Data.price.price}</Text>
 
-                                            <Text style={{ color: "green", paddingLeft: 10 }}>R$ {Data.price}</Text>
-
-                                            <Text> X </Text>
-                                            <View style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                                                {toggleCheckBox && <TouchableOpacity onPress={() => { handleUpdateQuantityItems(Data._id, "add") }} style={{ backgroundColor: "#d2691e", width: 35, height: 35, borderRadius: 100, marginBottom: 10, alignItem: "center", justifyContent: "center" }}><Text style={{ textAlign: "center", color: "white" }}>+</Text></TouchableOpacity>}
-                                                <TouchableOpacity style={{ }} onPress={() => { setToggleCheckBox(!toggleCheckBox) }}>
-                                                    <TextInput editable={false} value={Data.ammount.toString()} style={{ marginLeft: "5%", padding: 5, backgroundColor: "#ea9247", height: 40, borderRadius: 5, textAlign: "center", color: "white" }} defaultValue={0} keyboardType="numeric" maxLength={2} />
-                                                </TouchableOpacity>
-                                                {toggleCheckBox && <TouchableOpacity onPress={() => { handleUpdateQuantityItems(Data._id, "minus") }} style={{ backgroundColor: "#d2691e", width: 35, height: 35, borderRadius: 100, marginTop: 10, alignItem: "center", justifyContent: "center" }}><Text style={{ textAlign: "center", color: "white" }}>-</Text></TouchableOpacity>}
-                                            </View>
-                                        </View>
-                                    </View>
-                                )
-                            })
-                        }
+                            <Text> X </Text>
+                            <View style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                                {checkBoxTest[Data._id] && <TouchableOpacity onPress={() => { handleUpdateQuantityItems(Data._id, "add") }} style={{ backgroundColor: "#d2691e", width: 35, height: 35, borderRadius: 100, marginBottom: 10, alignItem: "center", justifyContent: "center" }}><Text style={{ textAlign: "center", color: "white" }}>+</Text></TouchableOpacity>}
+                                <TouchableOpacity style={{ }} onPress={() => { toggleBoxCheck(Data._id) }}>
+                                    <TextInput editable={false} value={Data.ammount.toString()} style={{ marginLeft: "5%", padding: 5, backgroundColor: "#ea9247", height: 40, borderRadius: 5, textAlign: "center", color: "white" }} defaultValue={0} keyboardType="numeric" maxLength={2} />
+                                </TouchableOpacity>
+                                {checkBoxTest[Data._id] && <TouchableOpacity onPress={() => { handleUpdateQuantityItems(Data._id, "minus") }} style={{ backgroundColor: "#d2691e", width: 35, height: 35, borderRadius: 100, marginTop: 10, alignItem: "center", justifyContent: "center" }}><Text style={{ textAlign: "center", color: "white" }}>-</Text></TouchableOpacity>}
+                            </View>
+                        </View>
+                    </View>
+                )
+            })
+            
+            }
             </>
         )
     }
@@ -149,6 +176,8 @@ export const CriarPedidos = () => {
         )
     }
 
+    const [clienteName, setClienteName] = useState()
+
     return (
         <SafeAreaView>
             <View style={styles.container}>
@@ -156,7 +185,7 @@ export const CriarPedidos = () => {
                     <Text style={{ fontSize: 20, fontWeight: "bold" }}>Produtos</Text>
                     <ScrollView style={{ maxHeight: 300 }}>
                         {
-                            products ===[] ? withoutProd() : productsPopulated()
+                            !products || products == [] || products.length === 0 ? withoutProd() : productsPopulated()
                         }
                     </ScrollView>
                 </View>
@@ -192,12 +221,55 @@ export const CriarPedidos = () => {
                         } else if(!checked) {
                             Alert.alert('Error!', 'error')
                         } else {
-                            navigator.navigate('Finish', { desc: "Pedido criado com sucesso!" })
-
+                            setModalVisible(true)
                         }
                     }} > Finalizar </BtDef>
                 </View>
             </View>
+            
+            <Modal 
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center", marginTop: 22}}>
+                    <View style={{margin: 20,
+                                backgroundColor: "white",
+                                borderRadius: 20,
+                                padding: 35,
+                                alignItems: "center",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 4,
+                                elevation: 5
+                        }}>
+                        <Text style={{ color: "black",
+                                    fontWeight: "bold",
+                                    textAlign: "center",
+                                    paddingBottom: 10,
+                        }}>Para concluir o pedido, informe o nome do cliente:</Text>
+                        <TextInput onChangeText={(value) => { setClienteName(value) }} placeholderTextColor="#DFDFDF" placeholder="Digite aqui o nome do cliente" style={styles.inputTexto}/>
+                        <Pressable style={[styles.button, styles.buttonClose]}
+                            onPress={() =>
+                                // {console.log("there is paaaayments!!")
+                                // console.log(checked) }
+                                api.post('/order/create', { cliente: clienteName, products: productcur, paymentMethod: checked, baseId: empr, filicod: filiais, total: total }).then(() => {
+                                    setModalVisible(!modalVisible)
+                                    navigator.navigate('Finish', {desc: "Pedido criado com sucesso"})
+                                })
+                            }>
+                                <Text style={{ color: 'white' }}>Finalizar pedido</Text>
+                            </Pressable>
+                    </View>
+                </View>
+            </Modal>
 
         </SafeAreaView>
     )
@@ -209,5 +281,24 @@ const styles = StyleSheet.create({
         paddingRight: "10%",
         paddingBottom: "30%",
         paddingTop: "5%"
-    }
+    },
+    inputTexto: {
+        backgroundColor: "#d2691e",
+        color: "white",
+        height: 52,
+        borderRadius: 7,
+        padding: 10
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        marginTop: 20,
+        backgroundColor: "#d2691e",
+      },
 })

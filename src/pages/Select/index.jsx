@@ -13,8 +13,6 @@ import base from '../../api/json/base.json'
 import { EmpContext } from '../../contexts/emp';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import axios from 'axios';
-
 import api from '../../api/api';
 
 export const Select = () => {

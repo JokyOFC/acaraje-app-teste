@@ -39,7 +39,7 @@ export const Pagamentos = () => {
                     {
                         payments.map((data) => {
                             return(
-                            <Card key={data._id} onPress={() => navigator.navigate('Pagamento', { isNew: false, payId: data._id })} tam={150} pad={0}>
+                            <Card key={data._id} onPress={() => navigator.navigate('Pagamento', { isNew: false, payId: data._id, data })} tam={150} pad={0}>
                                 <View style={{ padding:"20%" , alignItems: "center", justifyContent: "center" }}>
                                     <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>{data.name}</Text>
                                 </View>

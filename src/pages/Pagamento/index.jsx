@@ -5,14 +5,20 @@ import { SafeAreaView } from "react-navigation"
 import { BtDef } from '../../components/BtDef'
 
 import payments from "../../api/json/payments.json"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useNavigation } from "@react-navigation/native"
+
+import api from "../../api/api"
+
+import { EmpContext } from '../../contexts/emp';
 
 export const Pagamento = ({ route, navigation }) => {
 
     const navigator = useNavigation()
 
-    const { payId, isNew } = route.params
+    const { payId, isNew, data } = route.params
+
+    const { empr } = useContext(EmpContext)
 
     console.log(isNew)
     console.log(payId)
@@ -25,7 +31,8 @@ export const Pagamento = ({ route, navigation }) => {
 
     function NewPay() {
         
-        
+        const [ newPayValue, setNewPayValue ] = useState("");
+
         return(
             <KeyboardAvoidingView >
                 <ScrollView style={{ minHeight: "100%" }}>
@@ -33,11 +40,15 @@ export const Pagamento = ({ route, navigation }) => {
                             <Text style={{fontSize: 25}}>Criar Forma de Pagamento</Text>
                             <View style={{ margin: "10%", marginTop: "30%", marginRight: "2%" }}>
                                 <Text style={{ fontSize: 15 }}>Nome da forma de pagamento</Text>
-                                <TextInput placeholderTextColor="#DFDFDF" placeholder="Digite aqui o nome do produto" style={styles.inputTexto}/>
+                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setNewPayValue(value) }} placeholder="Digite aqui o nome do produto" style={styles.inputTexto}/>
                             </View>
                             <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
                                 <BtDef onPress={() => {
-                                navigator.navigate('Finish', {desc: "Forma de pagamento criada com sucesso"})
+                                    api.post('/payment/create', { BaseId: empr, name: newPayValue }).then(() => {
+                                        navigator.navigate('Finish', {desc: "Forma de pagamento criada com sucesso"})
+                                    }).catch((err) => {
+
+                                    })
                             }}>Finalizar</BtDef>
                             </View>
                         </View>
@@ -48,12 +59,12 @@ export const Pagamento = ({ route, navigation }) => {
     
     function Payment() {
     
-        console.log(payId)
-        const pay = payments.filter(x => x._id === payId)[0]
+        // console.log(payId)
+        // const pay = payments.filter(x => x._id === payId)[0]
         
-        const [ nome, setNome ] = useState(pay.name)
+        const [ nome, setNome ] = useState(data.name)
 
-        console.log(pay)
+        // console.log(pay)
 
         return(
             <KeyboardAvoidingView>
@@ -66,7 +77,9 @@ export const Pagamento = ({ route, navigation }) => {
                         </View>
                         <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
                             <BtDef onPress={() => {
-                                navigator.navigate('Finish', {desc: "Forma de pagamento deletada com sucesso"})
+                                api.post('/payment/delete', { BaseId: empr, paymentId: payId }).then(() => {
+                                    navigator.navigate('Finish', {desc: "Forma de pagamento deletada com sucesso"})
+                                })
                             }}>Deletar</BtDef>
                             <BtDef onPress={() => { navigator.goBack() }}>Voltar</BtDef>
                         </View>
