@@ -10,12 +10,41 @@ import { BoxSearch } from "../../components/BoxSearch";
 import { Divider } from "react-native-paper";
 import { BtDef } from "../../components/BtDef";
 
+import api from "../../api/api";
+
 export const CriarBase = () => {
+
+    /*
+        {
+            name: String,
+            payments: [
+                    {
+                        type: mongo.Types.ObjectId,
+                        ref: 'payment',
+                        default: []
+                    }
+                ],
+            products: [
+                    {
+                        type: mongo.Types.ObjectId,
+                        ref: 'product',
+                        default: []
+                    }
+                ],
+            filiais: [
+                {
+                    filicod: Number,
+                    name: String,
+                }
+            ]
+        }
+    */
 
     const navigate = useNavigation();
 
     const [ empresa, setEmpresa ] = useState("Empresa");
     const [ filiais, setFiliais ] = useState(0);
+    const [ filiaisList, setFiliaisList ] = useState([]);
 
     return(
         <View style={styles.container}>
@@ -23,7 +52,7 @@ export const CriarBase = () => {
                 <Profile />
                 <View style={ styles.headerTexts }>
                     <Text style={{ fontSize: 25 }}>{empresa}</Text>
-                    <Text style={{ fontSize: 15 }}>{filiais} Filiais</Text>
+                    <Text style={{ fontSize: 15 }}>{filiaisList.length} Filiais</Text>
                 </View>
             </View>
 
@@ -49,8 +78,8 @@ export const CriarBase = () => {
             </View>
 
             <View style={{ display: 'flex', flexDirection: 'row', marginTop: 30 }}>
-                <BtDef>Voltar</BtDef>
-                <BtDef>Finalizar</BtDef>
+                <BtDef onPress={() => { navigate.goBack() }}>Voltar</BtDef>
+                <BtDef onPress={() => {}}>Finalizar</BtDef>
             </View>
 
         </View>

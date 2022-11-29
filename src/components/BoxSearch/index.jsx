@@ -5,6 +5,7 @@ import { Divider } from "react-native-paper"
 
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from "react-native"
 
+
 export const BoxSearch = ({ filiaisBox }) => {
     
     const [ filiais, setFiliais ] = useState([{}]);
@@ -19,15 +20,21 @@ export const BoxSearch = ({ filiaisBox }) => {
             <Divider />
 
             
-            <ScrollView>
-                {filiais.map((filial) => {
+            <ScrollView style={{ maxWidth: "92%" }}>
+                {/* {filiais.map((filial) => {
                     return(
                         <View>
                             <Icon />
                             <Text>  </Text>
                         </View>
                     )
-                })}
+                })} */}
+                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, paddingLeft: 25, alignItems: 'center' }}>
+                    <TouchableOpacity>
+                        <Icon name="close" type="font-awesome" color="white" />
+                    </TouchableOpacity>
+                    <TextInput multiline={true} placeholder="Digite aqui o nome da sua filial" style={{ color: 'white', marginLeft: 10, padding: 5 }} onChangeText={() => {  }}/>
+                </View>
             </ScrollView>
 
             <Divider />
