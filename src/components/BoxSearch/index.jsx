@@ -4,11 +4,17 @@ import { Icon } from "react-native-elements"
 import { Divider } from "react-native-paper"
 
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from "react-native"
+import { useEffect } from "react"
 
 
 export const BoxSearch = ({ filiaisBox }) => {
-    
-    const [ filiais, setFiliais ] = useState([{}]);
+
+    const [ filiais, setFiliais ] = useState([]);
+    console.log(filiais)
+
+    useEffect(() => {
+        setFiliais(filiaisBox)
+    },[filiaisBox])
 
     return(
         <View style={ styles.container }>
@@ -21,20 +27,19 @@ export const BoxSearch = ({ filiaisBox }) => {
 
             
             <ScrollView style={{ maxWidth: "92%" }}>
-                {/* {filiais.map((filial) => {
+                {
+                filiais.map((filial) => {
                     return(
-                        <View>
-                            <Icon />
-                            <Text>  </Text>
-                        </View>
-                    )
-                })} */}
-                <View style={{ display: 'flex', flexDirection: 'row', padding: 10, paddingLeft: 25, alignItems: 'center' }}>
-                    <TouchableOpacity>
-                        <Icon name="close" type="font-awesome" color="white" />
-                    </TouchableOpacity>
-                    <TextInput multiline={true} placeholder="Digite aqui o nome da sua filial" style={{ color: 'white', marginLeft: 10, padding: 5 }} onChangeText={() => {  }}/>
-                </View>
+                            <View style={{ display: 'flex', flexDirection: 'row', padding: 10, paddingLeft: 25, alignItems: 'center' }}>
+                                <TouchableOpacity>
+                                    <Icon name="close" type="font-awesome" color="white" />
+                                </TouchableOpacity>
+                                <TextInput value={filial.name} multiline={true} placeholder="Digite aqui o nome da sua filial" style={{ color: 'white', marginLeft: 10, padding: 5 }} onChangeText={() => {  }}/>
+                            </View>
+                        )
+                    })
+                }
+                
             </ScrollView>
 
             <Divider />

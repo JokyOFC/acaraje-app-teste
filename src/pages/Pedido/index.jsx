@@ -1,5 +1,5 @@
 
-import { StyleSheet, View, Text, Alert, ScrollView } from "react-native"
+import { StyleSheet, View, Text, Pressable , ScrollView, Modal } from "react-native"
 
 // import orders from "../../api/json/orders.json"
 
@@ -45,6 +45,9 @@ export const Pedido = ({ route, navigation }) => {
     //     pedido()
 
     // }, []) 
+
+    const [ finished, setFinished ] = useState(orders[0].finished)
+    const [modalVisible, setModalVisible] = useState(false);
 
     return(
         <View style={ styles.container }>
@@ -106,8 +109,14 @@ export const Pedido = ({ route, navigation }) => {
                                 </View>
                                 <View style={{display:"flex",flexDirection:"row", padding: "2%"}}>
                                     <CheckBox 
-                                        value={data.finished}
+                                        value={finished}
                                         color="#ea9247"
+                                        onValueChange={() => {
+                                            {
+                                                setFinished(!finished);
+                                                setModalVisible(true);
+                                            }   
+                                        }}
                                     />
                                     <Text style={{ paddingLeft: "2%"}}>Finalizado</Text>
                                 </View>
@@ -117,7 +126,7 @@ export const Pedido = ({ route, navigation }) => {
                                             navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!"})
                                         })
                                         }}> Cancelar </BtDef>
-                                    <BtDef onPress={() => navigator.goBack()} > Voltar </BtDef>
+                                    <BtDef onPress={() => navigator.navigate('Pedidos')} > Voltar </BtDef>
                                 </View>
 
                             </View>
@@ -125,6 +134,62 @@ export const Pedido = ({ route, navigation }) => {
                 )
                 })
             }
+            <Modal 
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center", marginTop: 22}}>
+                    <View style={{margin: 20,
+                                backgroundColor: "white",
+                                borderRadius: 20,
+                                padding: 35,
+                                alignItems: "center",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 4,
+                                elevation: 5
+                        }}>
+                        <Text style={{ color: "black",
+                                    fontWeight: "bold",
+                                    textAlign: "center",
+                                    paddingBottom: 10,
+                        }}>{finished === true ? "Deseja finalizar o pedido?" : "Deseja retomar o pedido?" }</Text>
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: "center", width: "42%", padding: 0 }}>
+                                <Pressable style={[styles.button, styles.buttonClose]}
+                                    onPress={() =>
+                                        // {console.log("there is paaaayments!!")
+                                        // console.log(checked) }
+                                        api.post('/order/finishupdate', { id: orders[0]._id, finished: finished}).then(() => {
+                                            setModalVisible(!modalVisible)
+                                            navigator.navigate('Pedido', {
+                                                orderId: orders[0]._id,
+                                                orderObj: orderObj
+                                            })
+                                        })
+                                }>
+                                    <Text style={{ color: 'white' }}>Sim</Text>
+                                </Pressable>
+                                <Pressable style={[styles.button, styles.buttonClose]}
+                                    onPress={() =>{
+                                        setFinished(!finished);
+                                        setModalVisible(!modalVisible)
+                                    }
+                                }>
+                                    <Text style={{ color: 'white' }}>Não</Text>
+                                </Pressable>
+                            </View>          
+                    </View>
+                </View>
+            </Modal>
+
         </View>
     )
 }
@@ -136,5 +201,19 @@ const styles = StyleSheet.create({
     },
     total: {
         width: "100%", height: "23%", alignItems: "center", justifyContent: "center"
-    }
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        minWidth: 60,
+        alignItems: "center",
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        marginTop: 20,
+        backgroundColor: "#d2691e",
+      },
 })

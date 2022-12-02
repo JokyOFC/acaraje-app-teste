@@ -8,7 +8,7 @@ import { Card } from "../../components/Card"
 // import orders from "../../api/json/orders.json"
 // import { RadioButton } from "react-native-paper"
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 import RadioForm from "react-native-simple-radio-button";
 import { format } from "date-fns";
@@ -26,17 +26,21 @@ export const Pedidos = () => {
     const [ checked, setChecked ] = useState(0)
 
     const [ orders, setOrder ] = useState([])
+    const [ orderMap, setOrderMap ] = useState([])
     
     const radio_props = [
-        {label: 'Todos', value: checked},
-        {label: 'Ordenar Por X', value: checked},
-        {label: 'Ordenar Por Y', value: checked},
+        {label: 'Todos', value: 0},
+        {label: 'Em Andamento', value: 1},
+        {label: 'Finalizado', value: 2},
     ]
+
+    const isFocused = useIsFocused()
 
     async function findOrders() {
         await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {
             console.log(res.data)    
             setOrder(res.data)
+            setOrderMap(res.data)
         })
 
         console.log('there is orders by base!!')
@@ -47,6 +51,30 @@ export const Pedidos = () => {
     useEffect(() => {
         findOrders()
     }, [])
+
+    useEffect(() => {
+        findOrders()
+    } , [isFocused])
+
+    useEffect(() => {
+        console.log("checkd value!!!")
+        console.log(checked)
+        switch(checked){
+            case 1:
+                setOrder(orderMap.filter((order) => order.finished === false ));
+                console.log("thereis orders filtred!!")
+                console.log(orders);
+                break;
+            case 2:
+                setOrder(orderMap.filter((order) => order.finished === true ));
+                console.log("thereis orders filtred!!")
+                console.log(orders);
+                break;
+            default:
+                findOrders();
+
+        }
+    }, [checked])
 
     const semPedidos = () => {
         console.log("Não tenho pedidos!!")

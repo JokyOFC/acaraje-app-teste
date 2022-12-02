@@ -1,7 +1,7 @@
 
 import { useContext, useState } from "react";
 
-import { StyleSheet, Text, Button, View } from "react-native"
+import { StyleSheet, Text, Button, View, TouchableOpacity } from "react-native"
 
 import { Profile } from "../../components/Profile"
 import { BtDef } from "../../components/BtDef"
@@ -14,7 +14,7 @@ import base from "../../api/json/base.json"
 import { useEffect } from "react";
 
 import api from "../../api/api";
-import { Divider } from "react-native-paper";
+import { Icon } from "react-native-elements";
 
 export const Home = () => {
 
@@ -89,6 +89,11 @@ export const Home = () => {
                     <Text style={{ fontSize: 25, width: "100%", fontWeight: "bold" }}>{empall.name}</Text>
                     <Text style={{ fontSize: 15, width: "100%" }}>{filiname}</Text>
                 </View>
+                <TouchableOpacity style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }} onPress={() => {
+                    navigation.navigate('CriarBase', { baseId: empr })
+                }}>
+                    <Icon name="pencil" type='evilicon' color="#ea9247" size={40}/>
+                </TouchableOpacity>
             </View>
 
             <View
@@ -164,8 +169,8 @@ const styles = StyleSheet.create({
         flex:1,
     },
     header: {
-        width: "100%",
-        padding: "20%",
+        width: "105%",
+        padding: "17%",
         paddingBottom: "10%",
         flexDirection: "row",
         alignItems: "center",
