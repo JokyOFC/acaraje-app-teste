@@ -25,14 +25,14 @@ export const Card = ({ children, onPress, tam, pad }) => {
 
 const styles = StyleSheet.create({
     container: (size, padd) => ({
-        backgroundColor: "#ea9247",
+        backgroundColor: "rgba(234, 146, 71, 1)",
         borderRadius: 25,
         height: size,
         padding:padd,
         width: "85%",
         margin: 10,
         elevation: 10,
-        shadowColor: "#ea9247",
+        shadowColor: "rgba(234, 146, 71, 1)",
         shadowOpacity: 6,
         shadowOffset: 1
     }),

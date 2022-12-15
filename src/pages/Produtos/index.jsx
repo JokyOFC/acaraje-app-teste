@@ -1,7 +1,7 @@
 
 import { useContext, useState } from "react"
 
-import { EmpContext } from "../../contexts/emp";
+import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import { useNavigation } from "@react-navigation/native"
 import { SafeAreaView, StyleSheet, View, Text, ScrollView } from "react-native"
@@ -15,18 +15,25 @@ import api from "../../api/api";
 
 export const Produtos = () => {
 
-    const { empr } = useContext(EmpContext)
+    const { empr, setLoading } = useEmpContext();
 
     const navigator = useNavigation();
 
     const [ products, setProducts ] = useState([])
 
-    useEffect(() => {
-        api.post('/products', { BaseId: empr }).then((result) => {
+    async function reqprod() {
+        setLoading(true);
+        await api.post('/products', { BaseId: empr }).then((result) => {
             console.log("there is resultdata!")
             console.log(result.data)
             setProducts(result.data)
+        }).finally(() => {
+            setLoading(false);
         })
+    }
+
+    useEffect(() => {
+        reqprod();
     }, [])
 
     return(

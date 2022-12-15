@@ -12,7 +12,7 @@ export const Finish = ({ route }) => {
 
     navigator.canGoBack() <= false
 
-    const { desc } = route.params;
+    const { desc, first } = route.params;
     return(
         <>
             <View style={styles.container}>
@@ -20,7 +20,7 @@ export const Finish = ({ route }) => {
                 <View style={{ alignItems: "center", justifyContent:"center", maxWidth: "80%"}}>
                     <Text style={{ fontSize: 20, color: "white", textAlign: "center", marginBottom: "5%" }}>{desc}</Text>
                     <BtDef onPress={() => {
-                        navigator.navigate("Home")
+                        first === true ? navigator.navigate("Select") : navigator.navigate("Home")
                     }}>Finalizar</BtDef>
                 </View>
             </View>

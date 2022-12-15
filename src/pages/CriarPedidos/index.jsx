@@ -18,14 +18,14 @@ import { useNavigation } from "@react-navigation/native";
 
 import RadioForm from "react-native-simple-radio-button";
 
-import { EmpContext } from "../../contexts/emp";
+import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import api from "../../api/api";
 import axios from "axios";
 
 export const CriarPedidos = () => {
 
-    const { empr, filiais, profilePhoto } = useContext(EmpContext)
+    const { empr, filiais, profilePhoto, setLoading } = useEmpContext();
     
     const navigator = useNavigation();
     
@@ -40,18 +40,24 @@ export const CriarPedidos = () => {
     const [products, setProducts] = useState([])
 
     async function listProducts() {
+        setLoading(true);
         await api.post('/products', { BaseId: empr }).then((response) => {
             console.log("dataofproducts")
             console.log(response.data)
             setProducts(response.data)
+        }).finally(() => {
+            setLoading(false);
         })
     }
     
     async function listPay() {
+        setLoading(true);
         await api.post('/payments', { BaseId: empr }).then((response) => {
             console.log("dataofpayments")
             console.log(response.data)
             setPayments(response.data)
+        }).finally(() => {
+            setLoading(false);
         })
     }
     
@@ -107,7 +113,7 @@ export const CriarPedidos = () => {
     useEffect(() => {
         if(products === []) return
         const newTotal = products.reduce((prev, current) =>
-            prev + (current.ammount * current.price.price)
+            prev + (current.ammount *  (priceupdate === true ? current.price.priceEvent : current.price.price))
             , 0)
         // console.log(newTotal)
         setTotal(newTotal)
@@ -128,6 +134,7 @@ export const CriarPedidos = () => {
     console.log(checkBoxTest, "testeeee")
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [priceupdate, setPriceUpdate] = useState(false);
 
     const productsPopulated = () => {
 
@@ -147,7 +154,7 @@ export const CriarPedidos = () => {
                         </View>
                         <View style={{ display: 'flex', alignContent: 'center', flexDirection: 'row', alignItems: "center", marginLeft: "auto" }}>
 
-                            <Text style={{ color: "green", paddingLeft: 10 }}>R$ {Data.price.price}</Text>
+                            <Text style={{ color: "green", paddingLeft: 10 }}>R$ {priceupdate === true ? Data.price.priceEvent : Data.price.price}</Text>
 
                             <Text> X </Text>
                             <View style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
@@ -188,6 +195,18 @@ export const CriarPedidos = () => {
                             !products || products == [] || products.length === 0 ? withoutProd() : productsPopulated()
                         }
                     </ScrollView>
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingTop: 10 }}>
+                        <CheckBox 
+                                        value={priceupdate}
+                                        color="#ea9247"
+                                        onValueChange={() => {
+                                            {
+                                                setPriceUpdate(!priceupdate);
+                                            }   
+                                        }}
+                                    />
+                                    <Text> usar preço de evento?</Text>
+                    </View>
                 </View>
                 <View style={{ minHeight: '20%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ color: "green", fontSize: 25, fontWeight: "bold" }}>Total</Text>
@@ -235,6 +254,7 @@ export const CriarPedidos = () => {
                 setModalVisible(!modalVisible);
               }}
             >
+                <View style={{ height: "100%", width: "100%", backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center", marginTop: 22}}>
                     <View style={{margin: 20,
                                 backgroundColor: "white",
@@ -257,17 +277,22 @@ export const CriarPedidos = () => {
                         }}>Para concluir o pedido, informe o nome do cliente:</Text>
                         <TextInput onChangeText={(value) => { setClienteName(value) }} placeholderTextColor="#DFDFDF" placeholder="Digite aqui o nome do cliente" style={styles.inputTexto}/>
                         <Pressable style={[styles.button, styles.buttonClose]}
-                            onPress={() =>
-                                // {console.log("there is paaaayments!!")
-                                // console.log(checked) }
-                                api.post('/order/create', { cliente: clienteName, products: productcur, paymentMethod: checked, baseId: empr, filicod: filiais, total: total }).then(() => {
-                                    setModalVisible(!modalVisible)
-                                    navigator.navigate('Finish', {desc: "Pedido criado com sucesso"})
-                                })
+                            onPress={async() =>{
+                                    // {console.log("there is paaaayments!!")
+                                    // console.log(checked) }
+                                    setLoading(true);
+                                    await api.post('/order/create', { cliente: clienteName, products: productcur, paymentMethod: checked, baseId: empr, filicod: filiais, total: total }).then(() => {
+                                        setModalVisible(!modalVisible)
+                                        navigator.navigate('Finish', {desc: "Pedido criado com sucesso", first: false})
+                                    }).finally(() => {
+                                        setLoading(false);
+                                    })
+                                }
                             }>
                                 <Text style={{ color: 'white' }}>Finalizar pedido</Text>
                             </Pressable>
                     </View>
+                </View>
                 </View>
             </Modal>
 

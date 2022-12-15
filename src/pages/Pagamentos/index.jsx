@@ -10,22 +10,29 @@ import { useEffect, useContext, useState } from "react"
 
 import api from "../../api/api"
 
-import { EmpContext } from "../../contexts/emp"
+import { EmpContext, useEmpContext } from "../../contexts/emp"
 
 export const Pagamentos = () => {
 
     const navigator = useNavigation();
 
-    const { empr } = useContext(EmpContext)
+    const { empr, setLoading } = useEmpContext();
 
     const [ payments, setPayments ] = useState([])
 
-    useEffect(() => {
-        api.post('/payments', { BaseId: empr }).then((result) => {
+    async function reqpay() {
+        setLoading(true);
+        await api.post('/payments', { BaseId: empr }).then((result) => {
             console.log("there is resultdata!")
             console.log(result.data)
             setPayments(result.data)
+        }).finally(() => {
+            setLoading(false);
         })
+    }
+
+    useEffect(() => {
+        reqpay();
     },[])
 
     return(

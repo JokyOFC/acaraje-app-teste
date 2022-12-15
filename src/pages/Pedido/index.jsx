@@ -14,7 +14,7 @@ import CheckBox from 'expo-checkbox';
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useContext, useState } from "react";
 
-import { EmpContext } from "../../contexts/emp";
+import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import api from "../../api/api";
 
@@ -26,7 +26,7 @@ export const Pedido = ({ route, navigation }) => {
 
     const navigator = useNavigation();
 
-    const { empr, filiais, profilePhoto } = useContext(EmpContext)
+    const { empr, filiais, profilePhoto } = useEmpContext();
     
     // const [ orders, setOrder ] = useState([])
     
@@ -59,7 +59,7 @@ export const Pedido = ({ route, navigation }) => {
                     return(
                         <View>
                             <View style={{ paddingBottom: 8 }}>
-                                <Text style={{fontSize: 25, fontWeight: "bold"}}>{data.id} - {data.cliente}</Text>
+                                <Text style={{fontSize: 25, fontWeight: "bold"}}>Cliente: {data.cliente}</Text>
                                 <Text style={{fontSize: 16}}>{format(new Date(data.createdAt), "dd/MM/yyyy")}</Text>
                             </View>
 
@@ -121,9 +121,12 @@ export const Pedido = ({ route, navigation }) => {
                                     <Text style={{ paddingLeft: "2%"}}>Finalizado</Text>
                                 </View>
                                 <View style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around", paddingLeft: "2%" }}>
-                                    <BtDef onPress={() => {
-                                        api.post('/order/cancel', { id: data._id }).then((response) => {
-                                            navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!"})
+                                    <BtDef onPress={async() => {
+                                        setLoading(true);
+                                        await api.post('/order/cancel', { id: data._id }).then((response) => {
+                                            navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!", first: false})
+                                        }).finally(() => {
+                                            setLoading(false);
                                         })
                                         }}> Cancelar </BtDef>
                                     <BtDef onPress={() => navigator.navigate('Pedidos')} > Voltar </BtDef>
@@ -142,50 +145,56 @@ export const Pedido = ({ route, navigation }) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={{flex: 1, justifyContent: "center", alignItems: "center", marginTop: 22}}>
-                    <View style={{margin: 20,
-                                backgroundColor: "white",
-                                borderRadius: 20,
-                                padding: 35,
-                                alignItems: "center",
-                                shadowColor: "#000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 4,
-                                elevation: 5
-                        }}>
-                        <Text style={{ color: "black",
-                                    fontWeight: "bold",
-                                    textAlign: "center",
-                                    paddingBottom: 10,
-                        }}>{finished === true ? "Deseja finalizar o pedido?" : "Deseja retomar o pedido?" }</Text>
-                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: "center", width: "42%", padding: 0 }}>
-                                <Pressable style={[styles.button, styles.buttonClose]}
-                                    onPress={() =>
-                                        // {console.log("there is paaaayments!!")
-                                        // console.log(checked) }
-                                        api.post('/order/finishupdate', { id: orders[0]._id, finished: finished}).then(() => {
-                                            setModalVisible(!modalVisible)
-                                            navigator.navigate('Pedido', {
-                                                orderId: orders[0]._id,
-                                                orderObj: orderObj
+                <View style={{ height: "100%", width: "100%", backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginTop: 22}}>
+                        <View style={{margin: 20,
+                                    backgroundColor: "white",
+                                    borderRadius: 20,
+                                    padding: 35,
+                                    alignItems: "center",
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                    elevation: 5
+                            }}>
+                            <Text style={{ color: "black",
+                                        fontWeight: "bold",
+                                        textAlign: "center",
+                                        paddingBottom: 10,
+                            }}>{finished === true ? "Deseja finalizar o pedido?" : "Deseja retomar o pedido?" }</Text>
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: "center", width: "42%", padding: 0 }}>
+                                    <Pressable style={[styles.button, styles.buttonClose]}
+                                        onPress={async() =>{
+                                            // {console.log("there is paaaayments!!")
+                                            // console.log(checked) }
+                                            setLoading(true);
+                                            await api.post('/order/finishupdate', { id: orders[0]._id, finished: finished}).then(() => {
+                                                setModalVisible(!modalVisible)
+                                                navigator.navigate('Pedido', {
+                                                    orderId: orders[0]._id,
+                                                    orderObj: orderObj
+                                                })
+                                            }).finally(() => {
+                                                setLoading(false);
                                             })
-                                        })
-                                }>
-                                    <Text style={{ color: 'white' }}>Sim</Text>
-                                </Pressable>
-                                <Pressable style={[styles.button, styles.buttonClose]}
-                                    onPress={() =>{
-                                        setFinished(!finished);
-                                        setModalVisible(!modalVisible)
-                                    }
-                                }>
-                                    <Text style={{ color: 'white' }}>Não</Text>
-                                </Pressable>
-                            </View>          
+                                        }
+                                    }>
+                                        <Text style={{ color: 'white' }}>Sim</Text>
+                                    </Pressable>
+                                    <Pressable style={[styles.button, styles.buttonClose]}
+                                        onPress={() =>{
+                                            setFinished(!finished);
+                                            setModalVisible(!modalVisible)
+                                        }
+                                    }>
+                                        <Text style={{ color: 'white' }}>Não</Text>
+                                    </Pressable>
+                                </View>          
+                        </View>
                     </View>
                 </View>
             </Modal>

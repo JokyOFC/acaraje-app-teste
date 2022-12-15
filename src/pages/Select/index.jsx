@@ -1,23 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Alert, Pressable } from "react-native"
+import { Text, StyleSheet, View, Alert, Pressable, Modal } from "react-native"
 
 import { Profile } from "../../components/Profile"
 import { BtDef } from "../../components/BtDef"
 
 import DropDownPicker from "react-native-dropdown-picker";
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import base from '../../api/json/base.json'
-import { EmpContext } from '../../contexts/emp';
+import { EmpContext, useEmpContext } from '../../contexts/emp';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import api from '../../api/api';
+import { ActivityIndicator } from 'react-native-paper';
 
 export const Select = () => {
 
     const navigation = useNavigation();
+
+    const isFocused = useIsFocused()
 
     const [empOpen, setEmpOpen] = useState(false);
     const [empValue, setEmpValue] = useState(null);
@@ -37,6 +40,40 @@ export const Select = () => {
 
       const [ disb, setDisb ] = useState(true)
 
+      // const {  } = useContext(EmpContext);
+
+      const { entrar, profilePhoto, loading, setLoading } = useEmpContext();
+
+      useEffect(() => {
+
+        async function loadReports() {
+
+          try {
+             const response = await api.get('/bases');
+  
+             console.log(response.data);
+             
+             let base = response.data
+ 
+             const result = base.map((item) => ({
+               label: item.name, 
+               value: item._id
+             }))
+       
+             setEmp(result)
+
+          } catch(error) {
+             console.log(error)
+          }
+  
+      }
+  
+      loadReports(); 
+
+      setLoading(false);
+
+      },[])
+
       useEffect(() => {
 
         async function loadReports() {
@@ -54,18 +91,20 @@ export const Select = () => {
              }))
        
              setEmp(result)
+             setEmpValue([])
+             setFili([])
+             setFiliValue(null)
+             setDisb(true)
 
           } catch(error) {
              console.log(error)
           }
-  
-      }
-  
-      loadReports(); 
 
-      },[])
+        }
+        loadReports(); 
+      }, [isFocused])
 
-      const { entrar, profilePhoto } = useContext(EmpContext)
+      
 
     return(
       <SafeAreaView>
@@ -93,19 +132,21 @@ export const Select = () => {
                     listMode="SCROLLVIEW"
                     textStyle={{ color: "white" }}
                     dropDownContainerStyle={{ backgroundColor: "#d2691e" }}
-                    onSelectItem={(value) => {
+                    onSelectItem={async (value) => {
                       console.log(value.value)
-
-                      api.post('/base/id', { id: value.value }).then((response) => {
+                      setLoading(true);
+                      await api.post('/base/id', { id: value.value }).then((response) => {
                         console.log(response.data)
                         const resultVal = response.data.filiais.map((item) => ({
-                          label: item.name, 
+                          label: `${item.filicod} - ${item.name}`, 
                           value: item.filicod
                         }))
                 
                         setFili(resultVal)
                         setDisb(false)
 
+                      }).finally(() => {
+                        setLoading(false);
                       })
                     }}
                   />
@@ -134,10 +175,10 @@ export const Select = () => {
                   />
               </View>
               <View styles={{marginTop: "10%", alignItems: "center", justifyContent: "center"}}>
-                  <Pressable onPress={() => {navigation.navigate('CriarBase')} }>
+                  <Pressable onPress={() => {navigation.navigate('CriarBase', { editarBase: false })} }>
                     <Text style={{color: "white"}}>Criar uma nova base</Text>
                   </Pressable>
-                  <BtDef onPress={() => {!filiValue || !empValue ? Alert.alert('Error!','error!') : entrar(empValue, filiValue) }}>Entrar</BtDef>
+                  <BtDef onPress={() => { !filiValue || filiValue === null || !empValue || empValue ===[] || empValue.length ===0 ? Alert.alert('Erro!','Escolha uma base e uma filial para prosseguir!') : setLoading(true); entrar(empValue, filiValue) }}>Entrar</BtDef>
               </View>
 
           </View>
@@ -152,11 +193,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#9b3c00"
     },
     form: {
-    marginBottom: 100,
+      marginBottom: 100,
     },
     header: {
         paddingTop: "20%",
-        paddingBottom: "15%",
+        paddingBottom: "15%"
     },
     placeholderStyles: {
       color: "#ea9247",

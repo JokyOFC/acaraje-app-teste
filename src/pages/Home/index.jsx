@@ -6,9 +6,9 @@ import { StyleSheet, Text, Button, View, TouchableOpacity } from "react-native"
 import { Profile } from "../../components/Profile"
 import { BtDef } from "../../components/BtDef"
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
-import { EmpContext } from "../../contexts/emp";
+import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import base from "../../api/json/base.json"
 import { useEffect } from "react";
@@ -18,9 +18,11 @@ import { Icon } from "react-native-elements";
 
 export const Home = () => {
 
-    const { empr, filiais, profilePhoto, empall } = useContext(EmpContext)
+    const { empr, filiais, profilePhoto, empall, entrar, recarregar, setLoading } = useEmpContext();
 
     const navigation = useNavigation();
+
+    const isFocused = useIsFocused()
 
     //const baseCur = base.find(e => e._id === empr)
 
@@ -42,6 +44,7 @@ export const Home = () => {
     
     async function getBase() {
         try{
+            setLoading(true)
             await api.post('/base/id', { id:empr }).then((response) => {
                 // console.log(response)
                 setBaseCur(response.data)
@@ -51,6 +54,8 @@ export const Home = () => {
                 // setFiliCur(basefilis.find(fil => fil.filicod === filiais))
             }).catch(function(error) {
                 console.log(error)
+            }).finally(() => {
+                setLoading(false);
             })
             // console.log(response.data.filiais)
             // console.log("listando baseCur")
@@ -67,6 +72,8 @@ export const Home = () => {
 
         getBase()
 
+        
+
         console.log("basecur!!")
         console.log(baseCur)
 
@@ -77,6 +84,9 @@ export const Home = () => {
         console.log(empall)
     },[])
     // console.log(baseCur)
+    useEffect(() => {
+        recarregar(empr, filiais)
+    }, [isFocused])
 
 
     return(
@@ -85,12 +95,12 @@ export const Home = () => {
                 <View>
                     <Profile srcImg={profilePhoto}/>
                 </View>
-                <View style={{ flex:1, flexDirection: "column", paddingLeft: 20, width: 80 }}>
-                    <Text style={{ fontSize: 25, width: "100%", fontWeight: "bold" }}>{empall.name}</Text>
+                <View style={{ flex:1, flexDirection: "column", paddingLeft: 15, width: 90 }}>
+                    <Text style={{ fontSize: 25, width: "110%", fontWeight: "bold" }}>{empall.name}</Text>
                     <Text style={{ fontSize: 15, width: "100%" }}>{filiname}</Text>
                 </View>
-                <TouchableOpacity style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center" }} onPress={() => {
-                    navigation.navigate('CriarBase', { baseId: empr })
+                <TouchableOpacity style={{ width: 40, height: 40, alignItems: "center", justifyContent: "center", paddingLeft: 10 }} onPress={() => {
+                    navigation.navigate('CriarBase', { editarBase: true })
                 }}>
                     <Icon name="pencil" type='evilicon' color="#ea9247" size={40}/>
                 </TouchableOpacity>
@@ -175,6 +185,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        paddingLeft: 30
     },
     body: {
         flex: 2,

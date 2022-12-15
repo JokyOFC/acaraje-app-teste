@@ -13,13 +13,13 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import RadioForm from "react-native-simple-radio-button";
 import { format } from "date-fns";
 
-import { EmpContext } from "../../contexts/emp";
+import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import api from "../../api/api";
 
 export const Pedidos = () => {
 
-    const { empr, filiais, profilePhoto } = useContext(EmpContext)
+    const { empr, filiais, profilePhoto, setLoading } = useEmpContext();
 
     const navigator = useNavigation();
     
@@ -27,6 +27,9 @@ export const Pedidos = () => {
 
     const [ orders, setOrder ] = useState([])
     const [ orderMap, setOrderMap ] = useState([])
+
+    const [ totalTe, setTotalTe ] = useState(0)
+    const [ total, setTotal ] = useState(0)
     
     const radio_props = [
         {label: 'Todos', value: 0},
@@ -37,15 +40,29 @@ export const Pedidos = () => {
     const isFocused = useIsFocused()
 
     async function findOrders() {
+        setLoading(true);
         await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {
             console.log(res.data)    
             setOrder(res.data)
             setOrderMap(res.data)
+        }).finally(() => {
+            setLoading(false);
         })
 
         console.log('there is orders by base!!')
         console.log(orders)
 
+    }
+
+    function sortBy( arr ) {
+    
+        arr.sort(function(x,y) {
+            return (x === y)? 0 : x? -1 : 1;
+
+        });
+    
+        console.log(a); 
+        
     }
 
     useEffect(() => {
@@ -58,7 +75,11 @@ export const Pedidos = () => {
 
     useEffect(() => {
         console.log("checkd value!!!")
-        console.log(checked)
+        console.log(checked);
+        // let orderttste = orderMap
+        // let a = orderttste.sort((x,y) => (x.finished === y.finished) ? 0 : x? -1 : 1);
+        // console.log("thereIs ORDERMAP!")
+        // console.log(a)
         switch(checked){
             case 1:
                 setOrder(orderMap.filter((order) => order.finished === false ));
@@ -94,7 +115,6 @@ export const Pedidos = () => {
                                     orders.map((order) => {
                                         // const [ page, setPage ] = useState()
                                         // setPage()
-
                                         console.log(order._id)
 
                                         const datavenda = new Date(order.createdAt);
@@ -146,7 +166,10 @@ export const Pedidos = () => {
         <SafeAreaView style={{ flex: 1, height: 500 }}>
                 <View>
                     <View style={styles.top}>
-                        <Text style={{ fontSize: 25 }}>Pedidos</Text>
+                        <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
+                            <Text style={{ fontSize: 25 }}>Pedidos</Text>
+                            {/* <Text style={{ color: 'green', fontSize: 20, alignSelf: "flex-end", marginBottom: 2, marginLeft: 5 }}>R${total}</Text> */}
+                        </View>
                         <View style={{ padding: 10, paddingBottom: 2 }}>
                             <RadioForm formHorizontal={true} 
                                 radio_props={radio_props}

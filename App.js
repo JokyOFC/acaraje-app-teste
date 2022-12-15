@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { Routes } from './src/routes';
 
-import { Text } from 'react-native';
 import EmpProvider from './src/contexts/emp';
 
 export default function App() {

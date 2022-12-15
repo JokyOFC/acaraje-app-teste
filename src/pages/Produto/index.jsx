@@ -9,7 +9,7 @@ import { BtDef } from '../../components/BtDef'
 // import products from "../../api/json/products.json"
 import { useState, useContext, useEffect } from "react"
 
-import { EmpContext } from "../../contexts/emp"
+import { EmpContext, useEmpContext } from "../../contexts/emp"
 
 import api from "../../api/api"
 import axios from "axios"
@@ -20,7 +20,7 @@ export const Produto = ({ route, navigation }) => {
 
     const { prodId, isNew, data } = route.params
 
-    const { empr } = useContext(EmpContext);
+    const { empr, setLoading } = useEmpContext();
 
     console.log(isNew)
     console.log(prodId)
@@ -58,12 +58,15 @@ export const Produto = ({ route, navigation }) => {
                                 <TextInput placeholderTextColor="#DFDFDF" placeholder="Digite aqui o preço do produto para eventos" style={styles.inputTexto} keyboardType="numeric" value={newPriceNValue} onChangeText={(value) => setNewPriceNValue(value)}/>
                             </View>
                             <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
-                                <BtDef onPress={() => {
+                                <BtDef onPress={async() => {
                                     if(!newProductValue) return Alert.alert('Error!', 'error')
                                     if(!newPriceValue) return Alert.alert('Error!', 'error')
                                     if(!newPriceNValue) { setNewPriceNValue(0) }
-                                    api.post('/product/create', { BaseId: empr, name: newProductValue, price: { price: newPriceValue, priceEvent: newPriceNValue }  }).then(() => {
-                                        navigator.navigate('Finish', { desc: "Produto criado com sucesso!" })
+                                    setLoading(true);
+                                    await api.post('/product/create', { BaseId: empr, name: newProductValue, price: { price: newPriceValue, priceEvent: newPriceNValue }  }).then(() => {
+                                        navigator.navigate('Finish', { desc: "Produto criado com sucesso!", first: false })
+                                    }).finally(() => {
+                                        setLoading(false);
                                     })
                             }}>Finalizar</BtDef>
                             </View>
@@ -96,14 +99,17 @@ export const Produto = ({ route, navigation }) => {
                                 <Text style={{ fontSize: 15 }}>Nome do produto</Text>
                                 <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setNome(value) }} value={nome} placeholder="Digite aqui o nome do produto" style={styles.inputTexto}/>
                                 <Text style={{ fontSize: 15, paddingTop: 27 }}>Preço</Text>
-                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setPreco(value) }} value={preco.price.toString()} placeholder="Digite aqui o preço do produto" style={styles.inputTexto} keyboardType="numeric"/>
+                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { Alert.alert('Aviso!', 'Função ainda não desenvolvida no sistema! em futuras atualizações iremos trazer essa função!') }} value={preco.price.toString()} placeholder="Digite aqui o preço do produto" style={styles.inputTexto} keyboardType="numeric"/>
                                 <Text style={{ fontSize: 15, paddingTop: 27 }}>Preço para Eventos</Text>
-                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setPrecoEvent(value) }} value={preco.priceEvent.toString()} placeholder="Digite aqui o preço do produto para Eventos" style={styles.inputTexto} keyboardType="numeric"/>
+                                <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { Alert.alert('Aviso!', 'Função ainda não desenvolvida no sistema! em futuras atualizações iremos trazer essa função!') }} value={preco.priceEvent.toString()}  placeholder="Digite aqui o preço do produto para Eventos" style={styles.inputTexto} keyboardType="numeric"/>
                         </View>
                         <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
-                            <BtDef onPress={() => {
-                                api.post('/product/delete', { BaseId: empr, productId: prodId }).then(() => {
+                            <BtDef onPress={async() => {
+                                setLoading(true);
+                                await api.post('/product/delete', { BaseId: empr, productId: prodId }).then(() => {
                                     navigator.navigate('Finish', { desc: "Produto deletado com sucesso!" })
+                                }).finally(() => {
+                                    setLoading(false);
                                 })
                             }}>Deletar</BtDef>
                             <BtDef onPress={() => {
@@ -132,5 +138,5 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         padding: 10,
         paddingLeft: 15
-    }
+    },
 })

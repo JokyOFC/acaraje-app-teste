@@ -7,6 +7,7 @@ export const EmpContext = createContext({})
 import img from '../../assets/2.png'
 
 import api from '../api/api'; 
+import { useEffect, useContext } from 'react';
 
 function EmpProvider({children}) {
 
@@ -14,6 +15,8 @@ function EmpProvider({children}) {
     const [ filiais, setFilial ] = useState();
 
     const [ empall, setEmpAll ] = useState();
+
+    const [ loading, setLoading ] = useState(false);
 
     const navigator = useNavigation();
 
@@ -27,19 +30,38 @@ function EmpProvider({children}) {
                 setEmpAll(result.data)
                 console.log("result of post!!")
                 console.log(result.data)
+            }).finally(() => {
+                setLoading(false);
             })
             navigator.navigate('Home');
             console.log(emp, fili);
         }
         
     }
-    
+
+    async function recarregar(emp, fili) {
+        if(emp && fili) {
+            setEmpr(emp);
+            setFilial(fili);
+            await api.post('/base/id', { id: emp }).then(function(result) {
+                setEmpAll(result.data)
+                console.log("result of post!!")
+                console.log(result.data)
+            }).finally(() => {
+                setLoading(false);
+            })
+        }
+        
+    }
     
     return(
-        <EmpContext.Provider value={{ empr, filiais, entrar, profilePhoto, empall }}>
+        <EmpContext.Provider value={{ empr, filiais, entrar, profilePhoto, empall, recarregar, loading, setLoading }}>
             {children}
         </EmpContext.Provider>
     )
+
 }
+
+export const useEmpContext = () => useContext(EmpContext);
 
 export default EmpProvider;

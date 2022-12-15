@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native"
 
 import api from "../../api/api"
 
-import { EmpContext } from '../../contexts/emp';
+import { EmpContext, useEmpContext } from '../../contexts/emp';
 
 export const Pagamento = ({ route, navigation }) => {
 
@@ -18,7 +18,7 @@ export const Pagamento = ({ route, navigation }) => {
 
     const { payId, isNew, data } = route.params
 
-    const { empr } = useContext(EmpContext)
+    const { empr, setLoading } = useEmpContext();
 
     console.log(isNew)
     console.log(payId)
@@ -43,11 +43,14 @@ export const Pagamento = ({ route, navigation }) => {
                                 <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setNewPayValue(value) }} placeholder="Digite aqui o nome do produto" style={styles.inputTexto}/>
                             </View>
                             <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
-                                <BtDef onPress={() => {
-                                    api.post('/payment/create', { BaseId: empr, name: newPayValue }).then(() => {
-                                        navigator.navigate('Finish', {desc: "Forma de pagamento criada com sucesso"})
+                                <BtDef onPress={async() => {
+                                    setLoading(true);
+                                    await api.post('/payment/create', { BaseId: empr, name: newPayValue }).then(() => {
+                                        navigator.navigate('Finish', {desc: "Forma de pagamento criada com sucesso", first: false})
                                     }).catch((err) => {
 
+                                    }).finally(() => {
+                                        setLoading(false);
                                     })
                             }}>Finalizar</BtDef>
                             </View>
@@ -76,9 +79,12 @@ export const Pagamento = ({ route, navigation }) => {
                                 <TextInput placeholderTextColor="#DFDFDF" onChangeText={(value) => { setNome(value) }} value={nome} placeholder="Digite aqui o nome da forma de pagamento" style={styles.inputTexto}/>
                         </View>
                         <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
-                            <BtDef onPress={() => {
-                                api.post('/payment/delete', { BaseId: empr, paymentId: payId }).then(() => {
-                                    navigator.navigate('Finish', {desc: "Forma de pagamento deletada com sucesso"})
+                            <BtDef onPress={async() => {
+                                setLoading(true);
+                                await api.post('/payment/delete', { BaseId: empr, paymentId: payId }).then(() => {
+                                    navigator.navigate('Finish', {desc: "Forma de pagamento deletada com sucesso", first: false})
+                                }).finally(() => {
+                                    setLoading(false);
                                 })
                             }}>Deletar</BtDef>
                             <BtDef onPress={() => { navigator.goBack() }}>Voltar</BtDef>
