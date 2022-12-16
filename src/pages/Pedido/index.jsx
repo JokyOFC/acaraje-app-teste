@@ -26,7 +26,7 @@ export const Pedido = ({ route, navigation }) => {
 
     const navigator = useNavigation();
 
-    const { empr, filiais, profilePhoto } = useEmpContext();
+    const { empr, filiais, profilePhoto, setLoading } = useEmpContext();
     
     // const [ orders, setOrder ] = useState([])
     
