@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useContext } from "react";
 
-import { SafeAreaView, ScrollView, StyleSheet, View, Text } from "react-native"
+import { SafeAreaView, ScrollView, StyleSheet, View, Text, LogBox } from "react-native"
 
 import { Card } from "../../components/Card"
 
@@ -17,7 +17,11 @@ import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import api from "../../api/api";
 
+
+
 export const Pedidos = () => {
+
+    LogBox.ignoreAllLogs();
 
     const { empr, filiais, profilePhoto, setLoading } = useEmpContext();
 
@@ -27,6 +31,8 @@ export const Pedidos = () => {
 
     const [ orders, setOrder ] = useState([])
     const [ orderMap, setOrderMap ] = useState([])
+    const [ ordertest, setOrderTest ] = useState([])
+    const [ ordertest2, setOrderTeste2 ] = useState([])
 
     const [ totalTe, setTotalTe ] = useState(0)
     const [ total, setTotal ] = useState(0)
@@ -67,6 +73,7 @@ export const Pedidos = () => {
 
     useEffect(() => {
         findOrders()
+        // setOrder(orderMap)
     }, [])
 
     useEffect(() => {
@@ -82,11 +89,23 @@ export const Pedidos = () => {
         // console.log(a)
         switch(checked){
             case 1:
+                // setOrder([])
+                // setOrderTest(orderMap.sort(function(x, y) {
+                //     return (x.finished === y.finished)? 0 : x? -1 : 1; 
+                // }))
+                // console.log(ordertest);
                 setOrder(orderMap.filter((order) => order.finished === false ));
                 console.log("thereis orders filtred!!")
                 console.log(orders);
                 break;
             case 2:
+                // setOrder([])
+                // let x = orderMap.sort(function(x, y) {
+                //     return (x.finished === y.finished)? 0 : x? -1 : 1; 
+                // })
+                // setOrderTest(x)
+                // console.log("ordertest");
+                // console.log(ordertest);
                 setOrder(orderMap.filter((order) => order.finished === true ));
                 console.log("thereis orders filtred!!")
                 console.log(orders);
@@ -124,7 +143,7 @@ export const Pedidos = () => {
                                         // let mo = new Intl.DateTimeFormat('pt-BR', { month: '2-digit' }).format(datavenda);
                                         // let da = new Intl.DateTimeFormat('pt-BR', { day: '2-digit' }).format(datavenda);
                                         return(
-                                        <Card key={order._id} onPress={() => {navigator.navigate('Pedido', {
+                                        <Card onPress={() => {navigator.navigate('Pedido', {
                                             orderId: order._id,
                                             orderObj: order
                                         })}} pad={25} tam={225}>
