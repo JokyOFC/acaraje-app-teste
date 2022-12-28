@@ -24,32 +24,41 @@ function EmpProvider({children}) {
 
     async function entrar(emp, fili) {
         if(emp && fili) {
-            setEmpr(emp);
-            setFilial(fili);
-            await api.post('/base/id', { id: emp }).then(function(result) {
-                setEmpAll(result.data)
-                console.log("result of post!!")
-                console.log(result.data)
-            }).finally(() => {
+            try {
+                setEmpr(emp);
+                setFilial(fili);
+                await api.post('/base/id', { id: emp }).then(function(result) {
+                    setEmpAll(result.data)
+                    console.log("result of post!!")
+                    console.log(result.data)
+                })
+                navigator.navigate('Home');
+                console.log(emp, fili);
+
+            } catch(err) {
+                console.log(err)
+            } finally {
                 setLoading(false);
-            })
-            navigator.navigate('Home');
-            console.log(emp, fili);
+            }
         }
         
     }
 
     async function recarregar(emp, fili) {
-        if(emp && fili) {
-            setEmpr(emp);
-            setFilial(fili);
-            await api.post('/base/id', { id: emp }).then(function(result) {
-                setEmpAll(result.data)
-                console.log("result of post!!")
-                console.log(result.data)
-            }).finally(() => {
-                setLoading(false);
-            })
+        try{
+            if(emp && fili) {
+                setEmpr(emp);
+                setFilial(fili);
+                await api.post('/base/id', { id: emp }).then(function(result) {
+                    setEmpAll(result.data)
+                    console.log("result of post!!")
+                    console.log(result.data)
+                })
+            }
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false);
         }
         
     }

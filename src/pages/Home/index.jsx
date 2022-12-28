@@ -52,16 +52,14 @@ export const Home = () => {
                 // console.log(response.data)
                 // let basefilis = baseCur.filiais
                 // setFiliCur(basefilis.find(fil => fil.filicod === filiais))
-            }).catch(function(error) {
-                console.log(error)
-            }).finally(() => {
-                setLoading(false);
             })
             // console.log(response.data.filiais)
             // console.log("listando baseCur")
             // console.log(baseCur)
         } catch(error) {
             console.log(error)
+        } finally {
+            setLoading(false);
         }
 
     }

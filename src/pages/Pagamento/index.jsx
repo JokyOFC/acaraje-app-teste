@@ -45,13 +45,15 @@ export const Pagamento = ({ route, navigation }) => {
                             <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
                                 <BtDef onPress={async() => {
                                     setLoading(true);
-                                    await api.post('/payment/create', { BaseId: empr, name: newPayValue }).then(() => {
-                                        navigator.navigate('Finish', {desc: "Forma de pagamento criada com sucesso", first: false})
-                                    }).catch((err) => {
-
-                                    }).finally(() => {
+                                    try {
+                                        await api.post('/payment/create', { BaseId: empr, name: newPayValue }).then(() => {
+                                            navigator.navigate('Finish', {desc: "Forma de pagamento criada com sucesso", first: false})
+                                        })
+                                    } catch(err) {
+                                        console(err)
+                                    } finally {
                                         setLoading(false);
-                                    })
+                                    }
                             }}>Finalizar</BtDef>
                             </View>
                         </View>
@@ -81,11 +83,15 @@ export const Pagamento = ({ route, navigation }) => {
                         <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
                             <BtDef onPress={async() => {
                                 setLoading(true);
-                                await api.post('/payment/delete', { BaseId: empr, paymentId: payId }).then(() => {
-                                    navigator.navigate('Finish', {desc: "Forma de pagamento deletada com sucesso", first: false})
-                                }).finally(() => {
+                                try {
+                                    await api.post('/payment/delete', { BaseId: empr, paymentId: payId }).then(() => {
+                                        navigator.navigate('Finish', {desc: "Forma de pagamento deletada com sucesso", first: false})
+                                    })
+                                } catch(err) {
+                                    console.log(err)
+                                } finally {
                                     setLoading(false);
-                                })
+                                }
                             }}>Deletar</BtDef>
                             <BtDef onPress={() => { navigator.goBack() }}>Voltar</BtDef>
                         </View>

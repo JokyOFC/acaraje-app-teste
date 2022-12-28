@@ -202,11 +202,16 @@ export const CriarBase = ({ route, navigation }) => {
                     if(empresaE === "" || empresaE.length === 0 || !empresaE)  {Alert.alert('Error', 'error')}
                     else if(filiaisList === [] || filiaisList.length === 0 || !filiaisList)  {Alert.alert('Error', 'error')} else {
                         setLoading(true) 
-                        await api.post("/base/create", { name: empresaE, filiais: filiaisList }).then(() => {
-                            navigator.navigate('Finish', {desc: "Base criada com sucesso!", first: true})
-                        }).finally(() => {
+                        try {
+                            await api.post("/base/create", { name: empresaE, filiais: filiaisList }).then(() => {
+                                navigator.navigate('Finish', {desc: "Base criada com sucesso!", first: true})
+                            })
+                        } catch (err) {
+                            console.log(err)
+                        } finally {
                             setLoading(false);
-                        })
+                        }
+                        
                     }
 
 
@@ -220,11 +225,16 @@ export const CriarBase = ({ route, navigation }) => {
     function editarBaseF(){
         async function editRequest() {
             setLoading(true)
-            await api.post('/base/id', { id: empr }).then((response) => {
-                setFiliaisList(response.data.filiais)
-            }).finally(() => {
+            try {
+                await api.post('/base/id', { id: empr }).then((response) => {
+                    setFiliaisList(response.data.filiais)
+                })
+
+            } catch (err) {
+
+            } finally {
                 setLoading(false);
-            })
+            }
         }
         useEffect(() => {
             editRequest();
@@ -281,11 +291,15 @@ export const CriarBase = ({ route, navigation }) => {
                                                     Alert.alert('Error', 'Você não pode deletar a filial em que está!');
                                                 }else{
                                                     setLoading(true)
-                                                    await api.post('/base/fili/delete', { id: empr, filicod: filial }).then(() => {
-                                                        setFiliaisList(filiaisList.filter( x => x.filicod !== filial.filicod ))
-                                                    }).finally(() => {
+                                                    try {
+                                                        await api.post('/base/fili/delete', { id: empr, filicod: filial }).then(() => {
+                                                            setFiliaisList(filiaisList.filter( x => x.filicod !== filial.filicod ))
+                                                        })
+                                                    } catch (err) {
+                                                        console.log(err)
+                                                    } finally {
                                                         setLoading(false);
-                                                    })
+                                                    }
                                                     console.log(filiaisList)
                                                 }
 
@@ -383,20 +397,28 @@ export const CriarBase = ({ route, navigation }) => {
 
                         if(empresaE === "" || !empresaE || empresaE.length === 0) return Alert.alert('Erro!', 'A empresa precisa ter um nome!')
                         setLoading(true);
-                        await api.post('/base/update', { id: empr, name: empresaE }).finally(() => {
+                        try {
+                            await api.post('/base/update', { id: empr, name: empresaE })
+                        } catch (err) {
+                            console.log(err)
+                        } finally {
                             setLoading(false);
-                        })
+                        }
 
                         for(const x of teste2){
                             console.log("this from teste2!")
                             console.log(x)
                             if(x.name === "" || !x.name || x.name.length === 0) return Alert.alert('Erro!', 'A filial precisa ter um nome!')
                             setLoading(true);
-                            await api.post('/base/updatefiliname', { baseId: empr, id: x.filicod, name: x.name }).catch((err) => {
-                                Alert.alert('Error', err)
-                            }).finally(() => {
+                            try {
+                                await api.post('/base/updatefiliname', { baseId: empr, id: x.filicod, name: x.name }).catch((err) => {
+                                    Alert.alert('Error', err)
+                                })
+                            } catch (err) {
+                                console.log(err)
+                            } finally  {
                                 setLoading(false);
-                            })
+                            }
                         }
 
                         navigate.navigate('Finish', { desc: 'Base atualizada com sucesso!' })
@@ -405,30 +427,40 @@ export const CriarBase = ({ route, navigation }) => {
                         console.log('im in first condition')
                         if(empresaE === "" || !empresaE || empresaE.length === 0) return Alert.alert('Erro!', 'A empresa precisa ter um nome!')
                         setLoading(true);
-                        await api.post('/base/update', { id: empr, name: empresaE }).finally(() => {
+                        try {
+                            await api.post('/base/update', { id: empr, name: empresaE })
+                        } catch(err) {
+                            console.log(err)
+                        } finally {
                             setLoading(false);
-                        })
+                        }
                         console.log('im in the x')
                         console.log(editafililist)
                         for (const x of teste) {
                             console.log(x)
                             if(x.name === "" || !x.name || x.name.length === 0) return Alert.alert('Erro!', 'A filial precisa ter um nome!')
                             setLoading(true);
-                            await api.post('/base/createfili', { baseId: empr, filicod: x.filicod, name: x.name }).finally(() => {
+                            try {
+                                await api.post('/base/createfili', { baseId: empr, filicod: x.filicod, name: x.name })
+                            } catch (err) {
+                                console.log(err);
+                            } finally {
                                 setLoading(false);
-                            })
+                            }
                         }
                             navigate.navigate('Finish', { desc: 'Base atualizada com sucesso!' })
                     } else if( editanome === true && editafili === false ) {
                         if(empresaE === "" || !empresaE || empresaE.length === 0) return Alert.alert('Erro!', 'A empresa precisa ter um nome!')
                         setLoading(true);
-                        await api.post('/base/update', { id: empr, name: empresaE }).then(() => {
-                            navigate.navigate('Finish', { desc: 'Base atualizada com sucesso!' })
-                        }).finally(() => {
-
+                        try{
+                            await api.post('/base/update', { id: empr, name: empresaE }).then(() => {
+                                navigate.navigate('Finish', { desc: 'Base atualizada com sucesso!' })
+                            })
+                        } catch(err) {
+                            console(err);
+                        } finally {
                             setLoading(false);
-
-                        })
+                        }
                     } else if( editanome === false && editafili === true ){
                         console.log('this is testeeee!')
                         console.log(teste)
@@ -436,9 +468,13 @@ export const CriarBase = ({ route, navigation }) => {
                             console.log(x)
                             if(x.name === "" || !x.name || x.name.length === 0) return Alert.alert('Erro!', 'A filial precisa ter um nome!')
                             setLoading(true);
-                            await api.post('/base/createfili', { baseId: empr, filicod: x.filicod, name: x.name }).finally(() => {
+                            try {
+                                await api.post('/base/createfili', { baseId: empr, filicod: x.filicod, name: x.name })
+                            } catch (err) {
+                                console.log(err);
+                            } finally {
                                 setLoading(false);
-                            })
+                            }
                         }
                         navigate.navigate('Finish', { desc: 'Base atualizada com sucesso!' })
                     } else if( editafiliname === true && editanome === false) {
@@ -448,11 +484,14 @@ export const CriarBase = ({ route, navigation }) => {
                             console.log(x)
                             if(x.name === "" || !x.name || x.name.length === 0) return Alert.alert('Erro!', 'A filial precisa ter um nome!')
                             setLoading(true);
-                            await api.post('/base/updatefiliname', { baseId: empr, id: x.filicod, name: x.name }).catch((err) => {
-                                Alert.alert('Error', err)
-                            }).finally(() => {
+                            try {
+                                await api.post('/base/updatefiliname', { baseId: empr, id: x.filicod, name: x.name })
+                            } catch (err) {
+                                console.log(err)
+                            } finally {
                                 setLoading(false);
-                            })
+                            }
+                            
                         }
                         navigate.navigate('Finish', { desc: 'Base atualizada com sucesso!' })
                     } else {
@@ -510,12 +549,17 @@ export const CriarBase = ({ route, navigation }) => {
                                             // {console.log("there is paaaayments!!")
                                             // console.log(checked) }
                                             setLoading(true);
-                                            await api.post('/base/delete', { id: empr}).then(() => {
-                                                setModalVisible(!modalVisible)
-                                                navigator.navigate('Select')
-                                            }).finally(() => {
+                                            try {
+                                                await api.post('/base/delete', { id: empr}).then(() => {
+                                                    setModalVisible(!modalVisible)
+                                                    navigator.navigate('Select')
+                                                })
+                                            } catch(err) {
+                                                console.log(err)
+                                            } finally {
                                                 setLoading(false);
-                                            })
+                                            }
+                                            
                                         }
                                     }>
                                         <Text style={{ color: 'white' }}>Sim</Text>

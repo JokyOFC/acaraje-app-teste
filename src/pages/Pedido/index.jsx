@@ -123,11 +123,15 @@ export const Pedido = ({ route, navigation }) => {
                                 <View style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-around", paddingLeft: "2%" }}>
                                     <BtDef onPress={async() => {
                                         setLoading(true);
-                                        await api.post('/order/cancel', { id: data._id }).then((response) => {
-                                            navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!", first: false})
-                                        }).finally(() => {
+                                        try {
+                                            await api.post('/order/cancel', { id: data._id }).then((response) => {
+                                                navigator.navigate('Finish', {desc:"Pedido cancelado com sucesso!", first: false})
+                                            })
+                                        } catch(err) {
+                                            console.log(err)
+                                        } finally {
                                             setLoading(false);
-                                        })
+                                        }
                                         }}> Cancelar </BtDef>
                                     <BtDef onPress={() => navigator.navigate('Pedidos')} > Voltar </BtDef>
                                 </View>
@@ -172,15 +176,19 @@ export const Pedido = ({ route, navigation }) => {
                                             // {console.log("there is paaaayments!!")
                                             // console.log(checked) }
                                             setLoading(true);
-                                            await api.post('/order/finishupdate', { id: orders[0]._id, finished: finished}).then(() => {
-                                                setModalVisible(!modalVisible)
-                                                navigator.navigate('Pedido', {
-                                                    orderId: orders[0]._id,
-                                                    orderObj: orderObj
+                                            try {
+                                                await api.post('/order/finishupdate', { id: orders[0]._id, finished: finished}).then(() => {
+                                                    setModalVisible(!modalVisible)
+                                                    navigator.navigate('Pedido', {
+                                                        orderId: orders[0]._id,
+                                                        orderObj: orderObj
+                                                    })
                                                 })
-                                            }).finally(() => {
+                                            } catch(err) {
+                                                console.log(err)
+                                            } finally {
                                                 setLoading(false);
-                                            })
+                                            }
                                         }
                                     }>
                                         <Text style={{ color: 'white' }}>Sim</Text>

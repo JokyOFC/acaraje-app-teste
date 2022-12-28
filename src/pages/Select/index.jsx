@@ -49,8 +49,8 @@ export const Select = () => {
         async function loadReports() {
 
           try {
-             const response = await api.get('/bases');
-  
+              setLoading(true);
+             const response = await api.get('/bases')
              console.log(response.data);
              
              let base = response.data
@@ -64,13 +64,13 @@ export const Select = () => {
 
           } catch(error) {
              console.log(error)
+          } finally {
+            setLoading(false);
           }
   
       }
   
       loadReports(); 
-
-      setLoading(false);
 
       },[])
 
@@ -79,7 +79,8 @@ export const Select = () => {
         async function loadReports() {
 
           try {
-             const response = await api.get('/bases');
+            setLoading(true);
+             const response = await api.get('/bases')
   
              console.log(response.data);
              
@@ -98,10 +99,12 @@ export const Select = () => {
 
           } catch(error) {
              console.log(error)
+          } finally {
+            setLoading(false);
           }
 
         }
-        loadReports(); 
+        loadReports();
       }, [isFocused])
 
       
@@ -133,21 +136,27 @@ export const Select = () => {
                     textStyle={{ color: "white" }}
                     dropDownContainerStyle={{ backgroundColor: "#d2691e" }}
                     onSelectItem={async (value) => {
-                      console.log(value.value)
-                      setLoading(true);
-                      await api.post('/base/id', { id: value.value }).then((response) => {
-                        console.log(response.data)
-                        const resultVal = response.data.filiais.map((item) => ({
-                          label: `${item.filicod} - ${item.name}`, 
-                          value: item.filicod
-                        }))
-                
-                        setFili(resultVal)
-                        setDisb(false)
+                      try{
+                        console.log(value.value)
+                        setLoading(true);
+                        await api.post('/base/id', { id: value.value }).then((response) => {
+                          console.log(response.data)
+                          const resultVal = response.data.filiais.map((item) => ({
+                            label: `${item.filicod} - ${item.name}`, 
+                            value: item.filicod
+                          }))
+                  
+                          setFili(resultVal)
+                          setDisb(false)
+  
+                        })
 
-                      }).finally(() => {
+                      } catch(err) {
+                        console.log(err)
+                      } finally {
                         setLoading(false);
-                      })
+                      }
+
                     }}
                   />
                   

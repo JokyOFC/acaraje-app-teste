@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useContext } from "react";
 
-import { SafeAreaView, ScrollView, StyleSheet, View, Text, LogBox } from "react-native"
+import { SafeAreaView, ScrollView, StyleSheet, View, Text, LogBox, TouchableOpacity } from "react-native"
 
 import { Card } from "../../components/Card"
 
@@ -16,8 +16,10 @@ import { format } from "date-fns";
 import { EmpContext, useEmpContext } from "../../contexts/emp";
 
 import api from "../../api/api";
+import { TextInput } from "react-native-gesture-handler";
 
-
+import { Icon } from "react-native-elements"
+import { color } from "@storybook/addon-knobs";
 
 export const Pedidos = () => {
 
@@ -47,13 +49,17 @@ export const Pedidos = () => {
 
     async function findOrders() {
         setLoading(true);
-        await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {
-            console.log(res.data)    
-            setOrder(res.data)
-            setOrderMap(res.data)
-        }).finally(() => {
+        try {
+            await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {
+                console.log(res.data)    
+                setOrder(res.data)
+                setOrderMap(res.data)
+            })
+        } catch (err) {
+            console.log(err)
+        } finally {
             setLoading(false);
-        })
+        }
 
         console.log('there is orders by base!!')
         console.log(orders)
@@ -183,7 +189,7 @@ export const Pedidos = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, height: 500 }}>
-                <View>
+                <View >
                     <View style={styles.top}>
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
                             <Text style={{ fontSize: 25 }}>Pedidos</Text>
@@ -202,7 +208,16 @@ export const Pedidos = () => {
                             />
                         </View>
                     </View>
-                    <ScrollView style={{ maxHeight: "87%", maxWidth: 450 }}>
+                    <View style={{ width: '100%', height: 50, alignItems: "center", marginBottom: 10 }}>
+                        <View style={{ alignItems: "center", justifyContent: 'center',display: 'flex', flexDirection: 'row' ,  width: "93%", height: "100%", backgroundColor: "#ea9247", borderRadius: 10 }}>
+                            <Icon size={25} name='search' type='font-awesome' color='white'  />
+                            <TextInput style={{ width: "80%", height: "100%", marginLeft: 10, color: 'white' }} placeholder="Buscar pedido..." />
+                            <TouchableOpacity>
+                                <Icon size={25} name='filter' type='font-awesome' color='white' />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <ScrollView style={{ maxHeight: "81%", maxWidth: 450 }}>
                         {
                             !orders || orders === [] || orders.length === 0 ? semPedidos() : pedidosPopulated()
                         }

@@ -23,13 +23,17 @@ export const Produtos = () => {
 
     async function reqprod() {
         setLoading(true);
-        await api.post('/products', { BaseId: empr }).then((result) => {
-            console.log("there is resultdata!")
-            console.log(result.data)
-            setProducts(result.data)
-        }).finally(() => {
+        try {
+            await api.post('/products', { BaseId: empr }).then((result) => {
+                console.log("there is resultdata!")
+                console.log(result.data)
+                setProducts(result.data)
+            })
+        } catch (err) {
+            console.log(err)
+        } finally {
             setLoading(false);
-        })
+        }
     }
 
     useEffect(() => {

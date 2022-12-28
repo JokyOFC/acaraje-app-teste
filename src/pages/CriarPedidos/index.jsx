@@ -41,24 +41,32 @@ export const CriarPedidos = () => {
 
     async function listProducts() {
         setLoading(true);
-        await api.post('/products', { BaseId: empr }).then((response) => {
-            console.log("dataofproducts")
-            console.log(response.data)
-            setProducts(response.data)
-        }).finally(() => {
+        try {
+            await api.post('/products', { BaseId: empr }).then((response) => {
+                console.log("dataofproducts")
+                console.log(response.data)
+                setProducts(response.data)
+            })
+        } catch(err) {
+            console.log(err);
+        } finally {
             setLoading(false);
-        })
+        }
     }
     
     async function listPay() {
         setLoading(true);
-        await api.post('/payments', { BaseId: empr }).then((response) => {
-            console.log("dataofpayments")
-            console.log(response.data)
-            setPayments(response.data)
-        }).finally(() => {
+        try {
+            await api.post('/payments', { BaseId: empr }).then((response) => {
+                console.log("dataofpayments")
+                console.log(response.data)
+                setPayments(response.data)
+            })
+        } catch(err) {
+            console.log(err)
+        } finally {
             setLoading(false);
-        })
+        }
     }
     
     useEffect(() => {
@@ -281,12 +289,16 @@ export const CriarPedidos = () => {
                                     // {console.log("there is paaaayments!!")
                                     // console.log(checked) }
                                     setLoading(true);
-                                    await api.post('/order/create', { cliente: clienteName, products: productcur, paymentMethod: checked, baseId: empr, filicod: filiais, total: total }).then(() => {
-                                        setModalVisible(!modalVisible)
-                                        navigator.navigate('Finish', {desc: "Pedido criado com sucesso", first: false})
-                                    }).finally(() => {
+                                    try {
+                                        await api.post('/order/create', { cliente: clienteName, products: productcur, paymentMethod: checked, baseId: empr, filicod: filiais, total: total }).then(() => {
+                                            setModalVisible(!modalVisible)
+                                            navigator.navigate('Finish', {desc: "Pedido criado com sucesso", first: false})
+                                        })
+                                    } catch(err) {
+                                        console.log(err)
+                                    } finally {
                                         setLoading(false);
-                                    })
+                                    }
                                 }
                             }>
                                 <Text style={{ color: 'white' }}>Finalizar pedido</Text>

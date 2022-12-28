@@ -11,6 +11,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@eva-design/eva": "^2.1.1",
     "@react-native-community/checkbox": "^0.5.12",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
@@ -31,6 +32,7 @@
     "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
     "react-native-simple-radio-button": "^2.7.4",
+    "react-native-ui-kitten": "^4.4.1",
     "react-navigation": "^4.4.4",
     "styled-components": "^5.3.6"
   },

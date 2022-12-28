@@ -22,13 +22,17 @@ export const Pagamentos = () => {
 
     async function reqpay() {
         setLoading(true);
-        await api.post('/payments', { BaseId: empr }).then((result) => {
-            console.log("there is resultdata!")
-            console.log(result.data)
-            setPayments(result.data)
-        }).finally(() => {
+        try {
+            await api.post('/payments', { BaseId: empr }).then((result) => {
+                console.log("there is resultdata!")
+                console.log(result.data)
+                setPayments(result.data)
+            })
+        } catch(err) {
+            console.log(err)
+        } finally{
             setLoading(false);
-        })
+        }
     }
 
     useEffect(() => {

@@ -63,11 +63,15 @@ export const Produto = ({ route, navigation }) => {
                                     if(!newPriceValue) return Alert.alert('Error!', 'error')
                                     if(!newPriceNValue) { setNewPriceNValue(0) }
                                     setLoading(true);
-                                    await api.post('/product/create', { BaseId: empr, name: newProductValue, price: { price: newPriceValue, priceEvent: newPriceNValue }  }).then(() => {
-                                        navigator.navigate('Finish', { desc: "Produto criado com sucesso!", first: false })
-                                    }).finally(() => {
+                                    try {
+                                        await api.post('/product/create', { BaseId: empr, name: newProductValue, price: { price: newPriceValue, priceEvent: newPriceNValue }  }).then(() => {
+                                            navigator.navigate('Finish', { desc: "Produto criado com sucesso!", first: false })
+                                        })
+                                    } catch(err) {
+                                        console.log(err)
+                                    } finally {
                                         setLoading(false);
-                                    })
+                                    }
                             }}>Finalizar</BtDef>
                             </View>
                         </View>
@@ -106,11 +110,15 @@ export const Produto = ({ route, navigation }) => {
                         <View style={{ display: "flex", flexDirection: "row", width: "100%", paddingLeft: "10%", marginTop: "50%"}}>
                             <BtDef onPress={async() => {
                                 setLoading(true);
-                                await api.post('/product/delete', { BaseId: empr, productId: prodId }).then(() => {
-                                    navigator.navigate('Finish', { desc: "Produto deletado com sucesso!" })
-                                }).finally(() => {
+                                try {
+                                    await api.post('/product/delete', { BaseId: empr, productId: prodId }).then(() => {
+                                        navigator.navigate('Finish', { desc: "Produto deletado com sucesso!" })
+                                    })
+                                } catch(err) {
+                                    console.log(err)
+                                } finally {
                                     setLoading(false);
-                                })
+                                }
                             }}>Deletar</BtDef>
                             <BtDef onPress={() => {
                                 navigator.goBack()
