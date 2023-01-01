@@ -21,6 +21,8 @@ import { TextInput } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements"
 import { color } from "@storybook/addon-knobs";
 
+import { Menu, Divider, Provider } from "react-native-paper";
+
 export const Pedidos = () => {
 
     LogBox.ignoreAllLogs();
@@ -33,14 +35,25 @@ export const Pedidos = () => {
 
     const [ orders, setOrder ] = useState([])
     const [ orderMap, setOrderMap ] = useState([])
-    const [ ordertest, setOrderTest ] = useState([])
-    const [ ordertest2, setOrderTeste2 ] = useState([])
-
+    const [ order1, setOrder1 ] = useState([])
+    
+    const [ visibleMenu, setVisibleMenu ] = useState(false)
+    
+    const closeMenu = () => setVisibleMenu(false);
+    
     const [ totalTe, setTotalTe ] = useState(0)
     const [ total, setTotal ] = useState(0)
     
+    const [ tipoconsulta, setTipoConsulta ] = useState(1);
+    
+    // function addTotal (totalAdd)  {
+    //     setTotal(total + totalAdd);
+    // }
+
+    // var totalAdd = 0;
+    
     const radio_props = [
-        {label: 'Todos', value: 0},
+    {label: 'Todos', value: 0},
         {label: 'Em Andamento', value: 1},
         {label: 'Finalizado', value: 2},
     ]
@@ -49,12 +62,27 @@ export const Pedidos = () => {
 
     async function findOrders() {
         setLoading(true);
+        
         try {
-            await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {
-                console.log(res.data)    
-                setOrder(res.data)
-                setOrderMap(res.data)
-            })
+            switch(tipoconsulta) {
+                case 0: 
+                    await api.post('/orders/base', { id: empr, filicod: filiais }).then((res) => {    
+                        setOrder(res.data);
+                        setOrderMap(res.data);
+                        setOrder1(res.data);
+                        setChecked(0);
+                    })
+                break;
+                case 1 :
+                    await api.post('/orders/base/now', { id: empr, filicod: filiais }).then((res) => {    
+                        setOrder(res.data);
+                        setOrderMap(res.data);
+                        setOrder1(res.data);
+                        setChecked(0);
+                    })
+                break;
+    
+            }
         } catch (err) {
             console.log(err)
         } finally {
@@ -84,6 +112,11 @@ export const Pedidos = () => {
 
     useEffect(() => {
         findOrders()
+        // setOrder(orderMap)
+    }, [tipoconsulta])
+
+    useEffect(() => {
+        findOrders()
     } , [isFocused])
 
     useEffect(() => {
@@ -101,6 +134,7 @@ export const Pedidos = () => {
                 // }))
                 // console.log(ordertest);
                 setOrder(orderMap.filter((order) => order.finished === false ));
+                setOrder1(orderMap.filter((order) => order.finished === false ))
                 console.log("thereis orders filtred!!")
                 console.log(orders);
                 break;
@@ -113,6 +147,7 @@ export const Pedidos = () => {
                 // console.log("ordertest");
                 // console.log(ordertest);
                 setOrder(orderMap.filter((order) => order.finished === true ));
+                setOrder1(orderMap.filter((order) => order.finished === true ));
                 console.log("thereis orders filtred!!")
                 console.log(orders);
                 break;
@@ -141,13 +176,14 @@ export const Pedidos = () => {
                                         // const [ page, setPage ] = useState()
                                         // setPage()
                                         console.log(order._id)
-
+                                        
                                         const datavenda = new Date(order.createdAt);
                                         let data = format(datavenda, "dd/MM/yyyy")
                                         // let data = datavenda.toLocaleDateString()
                                         // let ye = new Intl.DateTimeFormat('pt-BR', { year: 'numeric' }).format(datavenda);
                                         // let mo = new Intl.DateTimeFormat('pt-BR', { month: '2-digit' }).format(datavenda);
                                         // let da = new Intl.DateTimeFormat('pt-BR', { day: '2-digit' }).format(datavenda);
+                                        // totalAdd = totalAdd + order.total;
                                         return(
                                         <Card onPress={() => {navigator.navigate('Pedido', {
                                             orderId: order._id,
@@ -193,7 +229,7 @@ export const Pedidos = () => {
                     <View style={styles.top}>
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
                             <Text style={{ fontSize: 25 }}>Pedidos</Text>
-                            {/* <Text style={{ color: 'green', fontSize: 20, alignSelf: "flex-end", marginBottom: 2, marginLeft: 5 }}>R${total}</Text> */}
+                            {/* <Text style={{ color: 'green', fontSize: 20, alignSelf: "flex-end", marginBottom: 2, marginLeft: 5 }}>R${totalAdd}</Text> */}
                         </View>
                         <View style={{ padding: 10, paddingBottom: 2 }}>
                             <RadioForm formHorizontal={true} 
@@ -204,6 +240,7 @@ export const Pedidos = () => {
                                 animation={true}
                                 buttonSize={12}
                                 labelStyle={{ paddingRight: "3%" }}
+                                
                                 onPress={(value) => setChecked(value)}
                             />
                         </View>
@@ -211,10 +248,38 @@ export const Pedidos = () => {
                     <View style={{ width: '100%', height: 50, alignItems: "center", marginBottom: 10 }}>
                         <View style={{ alignItems: "center", justifyContent: 'center',display: 'flex', flexDirection: 'row' ,  width: "93%", height: "100%", backgroundColor: "#ea9247", borderRadius: 10 }}>
                             <Icon size={25} name='search' type='font-awesome' color='white'  />
-                            <TextInput style={{ width: "80%", height: "100%", marginLeft: 10, color: 'white' }} placeholder="Buscar pedido..." />
-                            <TouchableOpacity>
-                                <Icon size={25} name='filter' type='font-awesome' color='white' />
-                            </TouchableOpacity>
+                            <TextInput style={{ width: "80%", height: "100%", marginLeft: 10, color: 'white' }} placeholder="Buscar pedido..." onChangeText={(value) => {
+                                console.log("there is value")
+                                console.log(orderMap)
+                                // console.log() ;
+                                
+                                setOrder(order1.filter(x => 
+                                    // console.log(x.cliente)
+                                    x.cliente.toLowerCase().includes(value.toLocaleLowerCase())
+                                ))
+                            }}/>
+                            {/* <TouchableOpacity onPress={() => {
+                                    openMenu
+                                }}><Icon size={25} name='filter' type='font-awesome' color='white' /></TouchableOpacity> */}
+                                <Menu
+                                    visible={visibleMenu}
+                                    onDismiss={closeMenu}
+                                    anchor={<Icon size={25} name='filter' type='font-awesome' color='white' onPress={() => {
+                                        setVisibleMenu(true);
+                                    }} />}
+                                >
+                                    <Menu.Item onPress={() => {
+                                        setTipoConsulta(1);
+                                    }} title="Hoje" />
+                                    <Menu.Item onPress={() => {
+                                        setTipoConsulta(0);
+                                    }} title="Todas as datas" />
+                                    <Divider />
+                                    <Menu.Item onPress={() => {
+                                        closeMenu()
+                                    }} title="Voltar" />
+
+                                </Menu>
                         </View>
                     </View>
                     <ScrollView style={{ maxHeight: "81%", maxWidth: 450 }}>
